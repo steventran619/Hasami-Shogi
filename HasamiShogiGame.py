@@ -256,7 +256,7 @@ class HasamiShogiGame():
     def corner_capture(self, start_loc, end_loc):
         """If the current move is nearby an opponent's corner piece, check to see if
         another active player's piece resides on the nearby corner.
-        Note: Corner captures can only occur if the active player moves to one
+        Note: Corner capturesho can only occur if the active player moves to one
         of 8 tiles (a2, b1, a8, b9, h1, i2, i8, h9). A piece of the opposite
         would need to be in the respective corner (a1, a9, i0, i9)
 
@@ -286,7 +286,8 @@ class HasamiShogiGame():
         pass
 
     def vertical_capture(self, start_loc, end_loc):
-        """After a valid move check, determines if the current move is vertical to an opponent's piece. If so check to see if another active player's piece is on the opposite side. 
+        """After a valid move check, determines if the current move is vertical to an opponent's piece.
+        If so check to see if another active player's piece is on the opposite side.
 
         Args:
             start_loc (str): a location with an active piece 
