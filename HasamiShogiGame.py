@@ -119,6 +119,7 @@ class HasamiShogiGame():
             # Raises some Error for inputting a correct color value.
             pass
 
+    # This might work as a wrapper. Converts to human friendly tiles (a-i)(1-9)
     def move_to_index(self, move):
         """Converts the move to an index for the _game_board's list parameters
         allowing for spaces of a-i and 1-9.
@@ -148,9 +149,9 @@ class HasamiShogiGame():
         """Determines if the square is occupied or not.
 
         Returns:
-            "RED": if square is occupied by a "R" piece
+            "RED":   if square is occupied by a "R" piece
             "BLACK": if square is occupied by a "B" piece
-            "NONE"":   square is empty; occupied by a "_"
+            "NONE":  if square is empty; occupied by a "_"
         """
         print(f"Square being checked for occupant: {square}")
 #       print(f"Checking for square occupant in space {square}")
@@ -193,6 +194,12 @@ class HasamiShogiGame():
 #            print("An illegal move type is requested. Please try again.")
             return None
         
+    def square_to_array(func):
+        def wrapper_do_twice(*args, **kwargs):
+            """Converts the square input into an array unit"""
+            func(*args, **kwargs)
+        return wrapper_do_twice
+        
     def horizontal_move(self, start_loc, end_loc):
         """Checks to see if there are any pieces between the start_loc to the
         end_loc. If the start location's column is less than the end location's
@@ -228,7 +235,8 @@ class HasamiShogiGame():
         start_row = int(start_loc[0])
         end_row = int(end_loc[0])
         col = int(start_loc[1])
-        index = ''        
+        index = ''
+        direction = 1
         if start_row < end_row:
             direction = -1
         elif start_row > end_row:
@@ -239,6 +247,7 @@ class HasamiShogiGame():
 
         for i in range(start_row + direction, end_row + direction, direction):
             index = str(i) + str(col)
+            print(index)
             print(f"checking index: {index}")
             space = self.get_square_occupant(index)
             if space != "NONE":
