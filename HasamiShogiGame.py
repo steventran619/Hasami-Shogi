@@ -163,9 +163,11 @@ class HasamiShogiGame():
         elif self._game_board[row][column] == "R":
             print(f"Red occupies {square}")
             return "RED"
-        else:
+        elif self._game_board[row][column] == "_":
             print(f"...its empty...")
             return "NONE"
+        else:
+            print("Something is wrong in get_square_occupant")
 
     # Move Verification Functions
     def move_type(self, start_loc, end_loc):
@@ -217,7 +219,8 @@ class HasamiShogiGame():
         """
         pass
     
-    def vertical_move(self, start_loc, end_loc):
+    #  Trying Recursive Move
+    def vertical_move(self, start_loc, end_loc, pos = None):
         """Checks to see if there are any pieces between the start_loc to the
         end_loc. If the start location's row is less than the end location's
         row, then the movement is up (i.e. i1 to h1). If the start location's
@@ -232,35 +235,55 @@ class HasamiShogiGame():
             True: move is valid; sets the move.
             False: move is not valid (something obstructs)
         """
-        start_row = int(start_loc[0])
+        start_row = int(start_loc[0]) + pos
         end_row = int(end_loc[0])
         col = int(start_loc[1])
-        index = ''
+        index = str(start_row) + start_loc[1]
         direction = 1
-        if start_row < end_row:
-            direction = -1
-        elif start_row > end_row:
-            direction = 1
+        print(f"position is now {pos}")
+        print(f"{start_row} trying to reach {end_row}")
+        # if start_row < end_row:
+        #     direction = -1
+        # elif start_row > end_row:
+        #     direction = 1
+        # else:
+        #     print("Should never reach here")
+        #     return None
+        if self.get_square_occupant(end_loc) != "NONE":
+            print("Cannot move to a non-empty space.")
+            return False
+        if start_row == end_row:
+            # set the start location to the active player's piece
+            if self.get_active_player() == "RED":
+                self.set_red(end_loc)
+            else:
+                self.set_black(end_loc)
+            # empty the original location to empty
+            self.set_empty(start_loc)
+            pass
+        elif self.get_square_occupant(index) == "NONE":
+            return self.vertical_move(start_loc, end_loc, pos-1)
         else:
-            print("Should never reach here")
-            return None
+            print("Invalid Move")
+            return False
+        
 
-        for i in range(start_row + direction, end_row + direction, direction):
-            index = str(i) + str(col)
-            print(index)
-            print(f"checking index: {index}")
-            space = self.get_square_occupant(index)
-            if space != "NONE":
-                print("Invalid Move - Move is blocked.")
-                return None
-        if self.get_active_player() == "BLACK":
-            self.set_black(end_loc)
-            self.set_empty(start_loc)
-            self.display_game()
-        elif self.get_active_player() == "RED":
-            self.set_red(end_loc)
-            self.set_empty(start_loc)
-            self.display_game()
+        # for i in range(start_row + direction, end_row + direction, direction):
+        #     index = str(i) + str(col)
+        #     print(index)
+        #     print(f"checking index: {index}")
+        #     space = self.get_square_occupant(index)
+        #     if space != "NONE":
+        #         print("Invalid Move - Move is blocked.")
+        #         return None
+        # if self.get_active_player() == "BLACK":
+        #     self.set_black(end_loc)
+        #     self.set_empty(start_loc)
+        #     self.display_game()
+        # elif self.get_active_player() == "RED":
+        #     self.set_red(end_loc)
+        #     self.set_empty(start_loc)
+        #     self.display_game()
     
     def corner_capture(self, start_loc, end_loc):
         """If the current move is nearby an opponent's corner piece, check to see if
@@ -342,7 +365,7 @@ class HasamiShogiGame():
             print(f"Moving from {start} to {end}")
             moving = self.move_type(start, end)
             if moving == "VERTICAL":
-                print("Check for vertical path")
+                print("make_move: Checking for vertical path")
                 self.vertical_move(start, end)
             elif moving == "HORIZONTAL":
                 print("Check for vertical path")
@@ -383,9 +406,10 @@ def main():
 #    game.get_square_occupant("a8")
     #game.get_square_occupant("a0")
     print(game.get_active_player())
-    game.make_move("i3", "d3")
-    game.make_move("a1", "b1")
-    game.make_move("i1", "c1")
+    game.make_move("i1", "g1")
+    game.display_game()
+    # game.make_move("a1", "b1")
+    # game.make_move("i1", "c1")
 #    game.make_move("i1", "c1")
 #    game.make_move("i1", "c1")
 #    game.make_move("a3", "c3")
