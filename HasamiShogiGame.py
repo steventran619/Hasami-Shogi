@@ -141,9 +141,9 @@ class HasamiShogiGame():
             return False
         for i in range(len(allowed)):
             if allowed[i] == move[0].lower():
-                print(i+1, move[1])
+                # print(i+1, move[1])
                 index = str(i) + str(int(move[1]) - 1)
-                print(f"The converted index is now: {index}")
+                # print(f"The converted index is now: {index}")
                 return index
         print("Reached end where its false")
         return False
