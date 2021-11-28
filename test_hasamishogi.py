@@ -66,33 +66,53 @@ class HasamiTests(unittest.TestCase):
     #     square = game.index_to_move("76")
     #     self.assertEqual(square, "h7")
 
-
-    def test_05_vertical_capture(self):
-        """This test checks the potential for a potential capture vertically above."""
-        game = HasamiShogiGame()
-        game.make_move('i2','b2')
-        game.make_move('a3','c3')
-        game.make_move('b2','b3')
-        game.make_move('a9','b9')
-        game.make_move('i3','d3')
-        game.display_game()
-        game.get_num_captured_pieces("RED")
+    # def test_05_vertical_capture(self):
+    #     """This test checks the potential for a potential capture vertically above."""
+    #     game = HasamiShogiGame()
+    #     game.make_move('i2','b2')
+    #     game.make_move('a3','c3')
+    #     game.make_move('b2','b3')
+    #     game.make_move('a9','b9')
+    #     game.make_move('i3','d3')
+    #     game.display_game()
+    #     game.get_num_captured_pieces("RED")
     
-    def test_06_vertical_capture_double(self):
-        """This test checks the potential for a potential capture vertically above."""
+    # def test_06_vertical_capture_double(self):
+    #     """This test checks the potential for a potential capture vertically above."""
+    #     game = HasamiShogiGame()
+    #     game.make_move('i5','e5')
+    #     game.make_move('a5','d5')
+    #     game.make_move('i4','f4')
+    #     game.make_move('a9','g9')
+    #     game.make_move('f4','f5') # Black
+    #     print(game.get_active_player())
+    #     game.make_move('g9','g5')
+    #     game.display_game()
+    #     game.get_num_captured_pieces("RED")
+    #     game.get_num_captured_pieces("BLACK")
+
+    # def test_07_vertical_capture_down_single(self):
+    #     """This test checks the potential for a potential capture vertically below."""
+    #     game = HasamiShogiGame()
+    #     game.make_move('i5','e5')
+    #     game.make_move('a4','f4')
+    #     game.make_move('i4','g4')
+    #     game.make_move('f4','f5')
+    #     game.make_move('g4','g5')
+    #     game.display_game()
+    #     game.get_num_captured_pieces("RED")
+    #     game.get_num_captured_pieces("BLACK")
+
+    def test_08_check_left(self):
         game = HasamiShogiGame()
-        game.make_move('i5','e5')
-        game.make_move('a5','d5')
-        game.make_move('i4','f4')
-        game.make_move('a9','g9')
-        game.make_move('f4','f5') # Black
-        print(game.get_active_player())
-        # game.make_move('g9','g5')
-        game.display_game()
-        game.get_num_captured_pieces("RED")
-
-
-    
+        pos1 = game.move_to_index('a1')
+        pos2 = game.move_to_index('b2')
+        pos3 = game.move_to_index('c3')
+        pos4 = game.move_to_index('i9')
+        self.assertFalse(game.check_left(pos1)) #1 space from left wall
+        self.assertFalse(game.check_left(pos2)) #2 space from left wall
+        self.assertTrue(game.check_left(pos3))  #3 spaces from left wall
+        self.assertTrue(game.check_left(pos4))  #4 spaces from left wall    
 
 if __name__ == '__main__':
     unittest.main()

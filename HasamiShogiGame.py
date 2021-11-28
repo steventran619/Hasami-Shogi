@@ -265,12 +265,13 @@ class HasamiShogiGame():
             if self.get_active_player() == "RED":
                 print(f"Red moved to {end_loc}")
                 self.set_red(end_loc)
+                self.set_empty(start_loc)
                 return True
             else:
                 print(f"Black moved to {end_loc}")
                 self.set_black(end_loc)
+                self.set_empty(start_loc)
                 return True
-            self.set_empty(start_loc)
         elif self.get_square_occupant(index) == "NONE":
             print(f"checking occupant for index {index}")
             return self.horizontal_move(start_loc, end_loc, pos + direction)
@@ -318,12 +319,13 @@ class HasamiShogiGame():
             if self.get_active_player() == "RED":
                 print(f"Red moved to {end_loc}")
                 self.set_red(end_loc)
+                self.set_empty(start_loc)
                 return True
             else:
                 print(f"Black moved to {end_loc}")
                 self.set_black(end_loc)
+                self.set_empty(start_loc)
                 return True
-            self.set_empty(start_loc)
         elif self.get_square_occupant(index) == "NONE":
             print(f"checking occupant for index {index}")
             return self.vertical_move(start_loc, end_loc, pos + direction)
@@ -370,7 +372,29 @@ class HasamiShogiGame():
         else:
             return True
 
-    def vertical_capture(self, start_loc, maybe_caps = None, pos = None):
+    def check_bottom(self, space):
+        """Checks if theres at least 2 spaces available below to score a capture"""
+        if int(space) + 20 > 88:
+            return False
+        else:
+            return True
+    
+    def check_left(self, space):
+        """Checks if theres at least 2 spaces available left to score a capture"""
+        if int(space[1]) - 2 < 0:
+            return False
+        else:
+            return True
+
+    def check_right(self, space):
+        """Checks if theres at least 2 spaces available right to score a capture"""
+        if int(space[1]) + 2 > 8:
+            return False
+        else:
+            return True
+
+
+    def vertical_capture_up(self, start_loc, maybe_caps = None, pos = None):
         """After a valid move check, determines if the current move is vertical to an opponent's piece. If so check to see if another active player's piece is on the opposite side.
 
         Args:
@@ -408,20 +432,47 @@ class HasamiShogiGame():
                     maybe_caps = []
                 maybe_caps.append(space_above)
                 print(maybe_caps)
-                return self.vertical_capture(start_loc, maybe_caps, pos - 10)
+                return self.vertical_capture_up(start_loc, maybe_caps, pos - 10)
 
-        # check space above end location
-        # if empty: return False
-        # if space != active player and not empty:
-        # save that spot to the list
-        # if space = active player and list of opposing pieces > 0:
-        # capture_pieces
-        # check next space above recursively
-        # check_top(scanned, pos, maybe_caps=None)
-        # if maybe_caps is None: 
-        # maybe_caps = []
-        # maybe_caps.append(space)
+    def vertical_capture_down(self, start_loc, maybe_caps = None, pos = None):
+        """After a valid move check, determines if the current move is vertical to an opponent's piece. If so check to see if another active player's piece is on the opposite side.
 
+        Args:
+            start_loc (str): a location with an active piece 
+            end_loc (str): a valid location to move an active piece
+
+        Returns:
+            True: Captures the opponent's piece piece. Updates number of captured pieces, and move_tracker
+            False: if vertical capture condition is not met
+        """
+        # check_top
+        if pos is None:
+            pos = 10
+        if self.check_bottom(start_loc):
+            space_below = str(int(start_loc) + pos)
+            # Scenario for an opponent piece above, but no matching active
+            if maybe_caps is not None:
+                if self.get_square_occupant(space_below) == "NONE":
+                    return False
+                # Scenario for a sandwich/capture
+                elif self.get_square_occupant(space_below) == self.get_active_player():
+                    for captures in maybe_caps:
+                        self.set_empty(captures)
+                        if self.get_active_player() == "RED":
+                            self.cap_black()
+                        else:
+                            self.cap_red()
+            print(f"\nVertical_Capture: the space below is {space_below}")
+            if self.get_square_occupant(space_below) == "NONE":
+                print("No need to check below, the space is empty")
+                return False
+            elif self.get_square_occupant(space_below) != self.get_active_player():
+                print("Found an opponent piece adjacent below.")
+                if maybe_caps is None:
+                    maybe_caps = []
+                maybe_caps.append(space_below)
+                print(maybe_caps)
+                return self.vertical_capture_up(start_loc, maybe_caps, pos + 10)
     
     def next_turn(self):
         """Increases the move tracker after a successful turn."""
@@ -472,7 +523,8 @@ class HasamiShogiGame():
                 print(f"Invalid Turn\nCurrent Player: {self.get_active_player()}")
         # After any successful move, scan the areas for possible captures.
         if move:
-            self.vertical_capture(end)
+            self.vertical_capture_up(end)
+            self.vertical_capture_down(end)
             self.next_turn()
 
 
