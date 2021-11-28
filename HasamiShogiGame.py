@@ -348,7 +348,7 @@ class HasamiShogiGame():
         """
         if pos is None:
             pos = 1
-        if self.check_bottom(start_loc):
+        if self.check_right(start_loc):
             space_right = str(int(start_loc) + pos)
             # Scenario for an opponent piece above, but no matching active
             if maybe_caps is not None:
@@ -362,9 +362,9 @@ class HasamiShogiGame():
                             self.cap_black()
                         else:
                             self.cap_red()
-            print(f"\nVertical_Capture: the space below is {space_right}")
+            print(f"\nRight_Capture: the space right is {space_right}")
             if self.get_square_occupant(space_right) == "NONE":
-                print("No need to check below, the space is empty")
+                print("No need to check right, the space is empty")
                 return False
             elif self.get_square_occupant(space_right) != self.get_active_player():
                 print("Found an opponent piece adjacent below.")
@@ -374,6 +374,47 @@ class HasamiShogiGame():
                 print(maybe_caps)
                 return self.horizontal_capture_right(start_loc, maybe_caps, pos + 1)
     
+    def horizontal_capture_left(self, start_loc, maybe_caps = None, pos = None):
+        """After a valid move check, determines if the current move is
+        horizontal to an opponent's piece. If so check to see if another
+        active player's piece is on the opposite side.
+
+        Args:
+            start_loc (str): a location with an active piece 
+            end_loc (str): a valid location to move an active piece
+
+        Returns:
+            True: Captures the opponent's piece piece. Updates number of captured pieces, and move_tracker
+            False: if horizontal capture condition is not met
+        """
+        if pos is None:
+            pos = -1
+        if self.check_left(start_loc):
+            space_left = str(int(start_loc) + pos)
+            # Scenario for an opponent piece left, but no matching active
+            if maybe_caps is not None:
+                if self.get_square_occupant(space_left) == "NONE":
+                    return False
+                # Scenario for a sandwich/capture
+                elif self.get_square_occupant(space_left) == self.get_active_player():
+                    for captures in maybe_caps:
+                        self.set_empty(captures)
+                        if self.get_active_player() == "RED":
+                            self.cap_black()
+                        else:
+                            self.cap_red()
+            print(f"\nLeft_Capture: the space left is {space_left}")
+            if self.get_square_occupant(space_left) == "NONE":
+                print("No need to check left, the space is empty")
+                return False
+            elif self.get_square_occupant(space_left) != self.get_active_player():
+                print("Found an opponent piece adjacent left.")
+                if maybe_caps is None:
+                    maybe_caps = []
+                maybe_caps.append(space_left)
+                print(maybe_caps)
+                return self.horizontal_capture_left(start_loc, maybe_caps, pos - 1)
+
     def corner_capture(self, start_loc, end_loc):
         """If the current move is nearby an opponent's corner piece, check to see if
         another active player's piece resides on the nearby corner.
@@ -390,8 +431,6 @@ class HasamiShogiGame():
             False: if corner capture condition is not met
         """
         pass
-
-
 
     def check_top(self, space):
         """Checks if theres at least 2 spaces available above to score a capture"""
