@@ -44,6 +44,8 @@ class HasamiShogiGame():
             ["B", "B", "B", "B", "B", "B", "B", "B", "B"]]
         self._move_tracker = 1      # Tracks the number of moves performed in the game
         self._game_state = "UNFINISHED"     # Will be used for while loop to
+        self._red_caps = 0
+        self._black_caps = 0
         # determine if the game is still on-going.
 
     def __repr__(self) -> str:
@@ -69,6 +71,14 @@ class HasamiShogiGame():
         row = int(space[0])
         col = int(space[1])
         self._game_board[row][col] = "B"
+
+    def cap_red(self):
+        """Increases the number of RED pieces captured by one."""
+        self._red_caps += 1
+
+    def cap_black(self):
+        """Increases the number of BLACK pieces captured by one."""
+        self._black_caps += 1
 
     def set_empty(self, space):
         """Sets a space to empty in a specified location (typically starting
@@ -110,11 +120,12 @@ class HasamiShogiGame():
         """Returns the number of captured pieces for the specified color.
         Used to determine if there's a winner after each move."""
         if color.upper() == "RED":
-            # Returns the number of red pieces captured
-            pass
+            print(f"\nRED pieces captured: {self._red_caps}")
+            return self._red_caps
         if color.upper() == "BLACK":
             # Returns the number of red pieces captured
-            pass
+            print(f"\nBLACK pieces captured: {self._black_caps}")
+            return self._black_caps
         else:
             # Raises some Error for inputting a correct color value.
             pass
@@ -254,9 +265,11 @@ class HasamiShogiGame():
             if self.get_active_player() == "RED":
                 print(f"Red moved to {end_loc}")
                 self.set_red(end_loc)
+                return True
             else:
                 print(f"Black moved to {end_loc}")
                 self.set_black(end_loc)
+                return True
             self.set_empty(start_loc)
         elif self.get_square_occupant(index) == "NONE":
             print(f"checking occupant for index {index}")
@@ -370,9 +383,21 @@ class HasamiShogiGame():
         """
         # check_top
         if pos is None:
-            pos = -10        
+            pos = -10
         if self.check_top(start_loc):
             space_above = str(int(start_loc) + pos)
+            # Scenario for an opponent piece above, but no matching active
+            if maybe_caps is not None:
+                if self.get_square_occupant(space_above) == "NONE":
+                    return False
+                # Scenario for a sandwich/capture
+                elif self.get_square_occupant(space_above) == self.get_active_player():
+                    for captures in maybe_caps:
+                        self.set_empty(captures)
+                        if self.get_active_player() == "RED":
+                            self.cap_black()
+                        else:
+                            self.cap_red()
             print(f"\nVertical_Capture: the space above is {space_above}")
             if self.get_square_occupant(space_above) == "NONE":
                 print("No need to check above, the space is empty")
@@ -383,9 +408,7 @@ class HasamiShogiGame():
                     maybe_caps = []
                 maybe_caps.append(space_above)
                 print(maybe_caps)
-
-                # return self.vertical_capture(start_loc, maybe_caps, pos)
-            
+                return self.vertical_capture(start_loc, maybe_caps, pos - 10)
 
         # check space above end location
         # if empty: return False
