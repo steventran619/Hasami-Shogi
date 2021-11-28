@@ -114,5 +114,27 @@ class HasamiTests(unittest.TestCase):
         self.assertTrue(game.check_left(pos3))  #3 spaces from left wall
         self.assertTrue(game.check_left(pos4))  #4 spaces from left wall    
 
+    def test_09_check_right(self):
+        game = HasamiShogiGame()
+        pos1 = game.move_to_index('a9')
+        pos2 = game.move_to_index('b8')
+        pos3 = game.move_to_index('c7')
+        pos4 = game.move_to_index('i7')
+        self.assertFalse(game.check_right(pos1)) #1 space from rightwall
+        self.assertFalse(game.check_right(pos2)) #2 space from rightwall
+        self.assertTrue(game.check_right(pos3))  #3 spaces from right wall
+        self.assertTrue(game.check_right(pos4))  #2 spaces from right wall    
+
+    def test_10_capture_right(self):
+        game = HasamiShogiGame()
+        game.make_move('i6','b6')
+        game.make_move('a5','b5')
+        game.make_move('i4','b4')
+        game.display_game()
+        game.get_num_captured_pieces("RED")
+        game.get_num_captured_pieces("BLACK")
+
+
+
 if __name__ == '__main__':
     unittest.main()
