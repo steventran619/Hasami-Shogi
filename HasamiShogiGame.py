@@ -678,6 +678,7 @@ class HasamiShogiGame():
         move = False
         if start and end:
             if self.get_square_occupant(start) == self.get_active_player():
+                print(f"Your turn: {self.get_active_player()}")
                 # Check if move is possible
                 # print(f"Moving from {start} to {end}")
                 moving = self.move_type(start, end)
@@ -690,7 +691,6 @@ class HasamiShogiGame():
                 else:
                     print("Invalid move. Please try again.")
                     return False
-                print(f"Your turn: {self.get_active_player()}")
             else:
                 print(f"Invalid Turn\nCurrent Player: {self.get_active_player()}")
         # After any successful move, scan the ending space for possible captures.
@@ -705,8 +705,9 @@ class HasamiShogiGame():
 def main():
     game = HasamiShogiGame()
     game.display_game()
-    print(game.get_active_player())
     game.make_move('i2','g2')
+    print(game.get_active_player())
+    game.make_move('g2','h2')
     game.make_move('a1','h1')
     game.make_move('g2','g1')
     game.make_move('a2','i2')
@@ -716,9 +717,10 @@ def main():
     game.make_move('c8','c9')
     game.make_move('i8','a8')
     game.make_move('c9','i9')
-    # game.display_game()
     game.make_move('a1','a2')
-    game.make_move('i9', 'i8')
+    game.display_game()
+
+    # game.make_move('i9', 'i8')
 
 if __name__ == "__main__":
     main()
