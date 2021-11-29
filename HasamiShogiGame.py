@@ -28,9 +28,7 @@ class HasamiShogiGame():
         function to determine if either RED or BLACK has captured at least 8
         pieces. If so, the _game_state flag will result with the winner.
         Otherwise it will remain in the 'IN PROGRESS' state. """
-        self._rows = 9          # NOT USED
-        self._columns = 9       # NOT USED
-        # self._top_label = "    [ 1 ][ 2 ][ 3 ][ 4 ][ 5 ][ 6 ][ 7 ][ 8 ][ 9 ]"
+        
         self._top_label = "    1 2 3 4 5 6 7 8 9"
         self._side_label = ['a','b','c','d','e','f','g','h','i']
         self._game_board = [["R", "R", "R", "R", "R", "R", "R", "R", "R"],
@@ -50,16 +48,12 @@ class HasamiShogiGame():
         # while self._red_caps < 8 and self._black_caps < 8:
         #     self._game_state = "UNFINISHED"
 
-    def __repr__(self) -> str:
-        """Printable Format of the Board Game State"""
-        for i in self._side_label:
-            print(self._side_label)
+
 
     def display_game(self):
         """Displays the current state of the game. """
         print('\n')
         print(self._top_label)
-#        print("=======================")
         for i in range(0, len(self._side_label)):
             print(self._side_label[i], "|" , *(self._game_board[i]))
 
@@ -181,9 +175,8 @@ class HasamiShogiGame():
         row = int(index[0])
         row = allowed[row]
         column = int(index[1]) + 1
-        print(f"the row is {row}, and the column is {column}")
+        # print(f"the row is {row}, and the column is {column}")
         move = row + str(column)
-        print(move)
         return move
 
     def get_square_occupant(self, square = ""):
@@ -198,7 +191,7 @@ class HasamiShogiGame():
         Args:
             square (str, optional): array index (0-8)(0-8). Defaults to "".
         """
-        print(f"Square being checked for occupant: {square}")
+        # print(f"Square being checked for occupant: {square}")
 #       print(f"Checking for square occupant in space {square}")
         row = int(square[0])
         column = int(square[1])
@@ -269,25 +262,25 @@ class HasamiShogiGame():
         start_col = int(start_loc[1]) + pos
         end_col = int(end_loc[1])
         index =  start_loc[0] + str(start_col)
-        print(f"position is now {pos}")
-        print(f"{start_col} trying to reach {end_col}")
+        # print(f"position is now {pos}")
+        # print(f"{start_col} trying to reach {end_col}")
         if self.get_square_occupant(end_loc) != "NONE":
             print("Cannot move to a non-empty space.")
             return False
         if start_col == end_col:
             # set the start location to the active player's piece
             if self.get_active_player() == "RED":
-                print(f"Red moved to {end_loc}")
                 self.set_red(end_loc)
                 self.set_empty(start_loc)
+                print(f"Red moved successfully {index}")
                 return True
             else:
-                print(f"Black moved to {end_loc}")
                 self.set_black(end_loc)
                 self.set_empty(start_loc)
+                print(f"Black moved successfully {index}")
                 return True
         elif self.get_square_occupant(index) == "NONE":
-            print(f"checking occupant for index {index}")
+            # print(f"checking occupant for index {index}")
             return self.horizontal_move(start_loc, end_loc, pos + direction)
         else:
             print("Invalid Move on Horizontal")
@@ -297,7 +290,7 @@ class HasamiShogiGame():
     def vertical_move(self, start_loc, end_loc, pos = None):
         """Checks to see if there are any pieces between the start_loc to the
         end_loc. If the start location's row is less than the end location's
-        row, then the movement is up (i.e. i1 to h1). If the start location's
+        row, then the movement is up (i.e. i1 to c1). If the start location's
         row is greater than the end location's row, then the movement is down
         (i.e. a1 to f1).
 
@@ -323,25 +316,25 @@ class HasamiShogiGame():
         start_row = int(start_loc[0]) + pos
         end_row = int(end_loc[0])
         index = str(start_row) + start_loc[1]
-        print(f"position is now {pos}")
-        print(f"{start_row} trying to reach {end_row}")
+        # print(f"position is now {pos}")
+        # print(f"{start_row} trying to reach {end_row}")
         if self.get_square_occupant(end_loc) != "NONE":
             print("Cannot move to a non-empty space.")
             return False
         if start_row == end_row:
             # set the start location to the active player's piece
             if self.get_active_player() == "RED":
-                print(f"Red moved to {end_loc}")
+                print(f"Red moved successfully {index}")
                 self.set_red(end_loc)
                 self.set_empty(start_loc)
                 return True
             else:
-                print(f"Black moved to {end_loc}")
+                print(f"Black moved successfully {index}")
                 self.set_black(end_loc)
                 self.set_empty(start_loc)
                 return True
         elif self.get_square_occupant(index) == "NONE":
-            print(f"checking occupant for index {index}")
+            # print(f"checking occupant for index {index}")
             return self.vertical_move(start_loc, end_loc, pos + direction)
         else:
             print("Invalid Move Vertically")
@@ -365,7 +358,7 @@ class HasamiShogiGame():
             pos = 1
         if self.check_right(start_loc):
                 space_right = (start_loc[0] + str(int(start_loc[1]) + pos)).zfill(2)
-                print(f"The space to the right is {space_right}")
+                # print(f"The space to the right is {space_right}")
                 # Scenario for an opponent piece above, but no matching active
                 if maybe_caps is not None:
                     if self.get_square_occupant(space_right) == "NONE":
@@ -378,9 +371,9 @@ class HasamiShogiGame():
                                 self.cap_black()
                             else:
                                 self.cap_red()
-                print(f"\nRight_Capture: the space right is: {space_right}")
+                # print(f"\nRight_Capture: the space right is: {space_right}")
                 if self.get_square_occupant(space_right) == "NONE":
-                    print("No need to check right, the space is empty")
+                    # print("No need to check right, the space is empty")
                     return False
                 elif self.get_square_occupant(space_right) != self.get_active_player():
                     print("Found an opponent piece adjacent below.")
@@ -422,9 +415,9 @@ class HasamiShogiGame():
                             self.cap_black()
                         else:
                             self.cap_red()
-            print(f"\nLeft_Capture: the space left is {space_left}")
+            # print(f"\nLeft_Capture: the space left is {space_left}")
             if self.get_square_occupant(space_left) == "NONE":
-                print("No need to check left, the space is empty")
+                # print("No need to check left, the space is empty")
                 return False
             elif self.get_square_occupant(space_left) != self.get_active_player():
                 print("Found an opponent piece adjacent left.")
@@ -455,7 +448,7 @@ class HasamiShogiGame():
             False: if corner capture condition is not met
         """
         if self.check_corner(start_loc):
-            print("Moved to a corner spot")
+            # print("Corner_Capture: Moved to a corner spot")
             # The following are the coordinates of trapper1[0], trapper2[1], and the captive[2]
             top_right = ['a8', 'b9', 'a9']
             top_left = ['b1', 'a2', 'a1']
@@ -523,7 +516,6 @@ class HasamiShogiGame():
 
     def check_corner(self, space):
         """Checks if the space moved to can capture a potential corner piece."""
-        corners = []
         corner_traps = ['a2', 'b1', 'a8', 'b9', 'h1', 'i2', 'i8', 'h9']
         possible_corner = False
         for trap in range(len(corner_traps)):
@@ -547,7 +539,7 @@ class HasamiShogiGame():
             pos = -10
         if self.check_top(start_loc):
             space_above = (str(int(start_loc) + pos)).zfill(2)
-            print(f"The space above is {space_above}")
+            # print(f"The space above is {space_above}")
             # Scenario for an opponent piece above, but no matching active
             if maybe_caps is not None:
                 if self.get_square_occupant(space_above) == "NONE":
@@ -560,17 +552,17 @@ class HasamiShogiGame():
                             self.cap_black()
                         else:
                             self.cap_red()
-            print(f"\nVertical_Capture: the space above is {space_above}")
+            # print(f"\nVertical_Capture: the space above is {space_above}")
             if self.get_square_occupant(space_above) == "NONE":
-                print("No need to check above, the space is empty")
+                # print("No need to check above, the space is empty")
                 return False
             elif self.get_square_occupant(space_above) != self.get_active_player():
-                print("Found an opponent piece adjacent above.")
+                # print("Found an opponent piece adjacent above.")
                 if maybe_caps is None:
                     maybe_caps = []
                 maybe_caps.append(space_above)
                 print(maybe_caps)
-                if int(space_above) - 10 < 0:
+                if int(space_above) - 10 >= 0:
                     return self.vertical_capture_up(start_loc, maybe_caps, pos - 10)
                 else:
                     return False
@@ -602,12 +594,12 @@ class HasamiShogiGame():
                             self.cap_black()
                         else:
                             self.cap_red()
-            print(f"\nVertical_Capture: the space below is {space_below}")
+            # print(f"\nVertical_Capture: the space below is {space_below}")
             if self.get_square_occupant(space_below) == "NONE":
-                print("No need to check below, the space is empty")
+                # print("No need to check below, the space is empty")
                 return False
             elif self.get_square_occupant(space_below) != self.get_active_player():
-                print("Found an opponent piece adjacent below.")
+                # print("Found an opponent piece adjacent below.")
                 if maybe_caps is None:
                     maybe_caps = []
                 maybe_caps.append(space_below)
@@ -653,13 +645,13 @@ class HasamiShogiGame():
         if start and end:
             if self.get_square_occupant(start) == self.get_active_player():
                 # Check if move is possible
-                print(f"Moving from {start} to {end}")
+                # print(f"Moving from {start} to {end}")
                 moving = self.move_type(start, end)
                 if moving == "VERTICAL":
-                    print("\nmake_move: Confirmed for vertical path")
+                    # print("\nmake_move: Confirmed for vertical path")
                     move = self.vertical_move(start, end)
                 elif moving == "HORIZONTAL":
-                    print("\nmake_move: Confirmed for Horizontal path")
+                    # print("\nmake_move: Confirmed for Horizontal path")
                     move = self.horizontal_move(start, end)
                 else:
                     print("Invalid move. Please try again.")
