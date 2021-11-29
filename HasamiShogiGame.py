@@ -57,6 +57,7 @@ class HasamiShogiGame():
 
     def display_game(self):
         """Displays the current state of the game. """
+        print('\n')
         print(self._top_label)
 #        print("=======================")
         for i in range(0, len(self._side_label)):
@@ -450,37 +451,47 @@ class HasamiShogiGame():
         """
         if self.check_corner(start_loc):
             print("Moved to a corner spot")
+            # The following are the coordinates of trapper1[0], trapper2[1], and the captive[2]
             top_right = ['a8', 'b9', 'a9']
             top_left = ['b1', 'a2', 'a1']
             bot_right = ['i8', 'h9', 'i9']
             bot_left = ['h1', 'i2', 'i0']
+
             active_player = self.get_active_player()
+            
+            # The move determines which active corner will be checked.
             if self.index_to_move(start_loc) in top_right:
-                if top_right[2] == 'NONE':
-                    return False
-                if self.get_square_occupant(self.move_to_index(top_right[0])) == \
-                        active_player \
-                        and self.get_square_occupant(self.move_to_index(
-                    top_right[1])) == \
-                        active_player and \
-                        self.get_square_occupant(self.move_to_index(
-                            top_right[2])) != \
-                        active_player:
-                    self.set_empty(self.move_to_index(top_right[2]))
-                    if active_player == "RED":
-                        self.cap_black()
-                    else:
-                        self.cap_red()
-                    return True
-                print("TOP_RIGHT")
+                active_corner = list(top_right)
             elif self.index_to_move(start_loc) in top_left:
-                print("TOP_LEFT")
+                active_corner = list(top_left)
             elif self.index_to_move(start_loc) in bot_right:
-                print("BOT_RIGHT")
+                active_corner = list(bot_right)
             elif self.index_to_move(start_loc) in bot_left:
-                print("BOT_LEFT")
+                active_corner = list(bot_left)
             else:
+                return False # Should never get here
+            
+            # If the captured corner is empty, don't bother checking a corner scenario.
+            if active_corner[2] == 'NONE':
                 return False
+
+            # Checks if the two trapping spaces belong to the active player, and if the captured corner belongs to the opponents.
+            if self.get_square_occupant(self.move_to_index(active_corner[0])) == \
+                    active_player \
+                    and self.get_square_occupant(self.move_to_index(
+                active_corner[1])) == \
+                    active_player and \
+                    self.get_square_occupant(self.move_to_index(
+                        active_corner[2])) != \
+                    active_player:
+                self.set_empty(self.move_to_index(active_corner[2]))
+                if active_player == "RED":
+                    self.cap_black()
+                else:
+                    self.cap_red()
+                return True
+            else:
+                return False  
 
     def check_top(self, space):
         """Checks if theres at least 2 spaces available above to score a capture."""
