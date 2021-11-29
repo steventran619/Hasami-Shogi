@@ -84,13 +84,6 @@ class HasamiShogiGame():
         col = int(space[1])
         self._game_board[row][col] = "_"
 
-    def set_game_state(self):
-        """Sets/checks the game state after each turn."""
-        if self.get_num_captured_pieces("RED") >= 8:
-            self._game_state = "BLACK_WON"
-        elif self.get_num_captured_pieces("BLACK") >= 8:
-            self._game_state = "RED WON"
-
     def get_game_state(self):
         """Function determines the current progress of the game. If there's a
         current winner or if its still "UNFINISHED"".
@@ -160,7 +153,7 @@ class HasamiShogiGame():
                 index = str(i) + str(int(move[1]) - 1)
                 # print(f"The converted index is now: {index}")
                 return index
-        print("Reached end where its false")
+        # print("Reached end where its false")
         return False
 
     def index_to_move(self, index):
@@ -272,12 +265,12 @@ class HasamiShogiGame():
             if self.get_active_player() == "RED":
                 self.set_red(end_loc)
                 self.set_empty(start_loc)
-                print(f"Red moved successfully {index}")
+                # print(f"Red moved successfully {index}")
                 return True
             else:
                 self.set_black(end_loc)
                 self.set_empty(start_loc)
-                print(f"Black moved successfully {index}")
+                # print(f"Black moved successfully {index}")
                 return True
         elif self.get_square_occupant(self.index_to_move(index)) == "NONE":
             # print(f"checking occupant for index {index}")
@@ -326,12 +319,12 @@ class HasamiShogiGame():
         if start_row == end_row:
             # set the start location to the active player's piece
             if self.get_active_player() == "RED":
-                print(f"Red moved successfully {index}")
+                # print(f"Red moved successfully {index}")
                 self.set_red(end_loc)
                 self.set_empty(start_loc)
                 return True
             else:
-                print(f"Black moved successfully {index}")
+                # print(f"Black moved successfully {index}")
                 self.set_black(end_loc)
                 self.set_empty(start_loc)
                 return True
@@ -387,11 +380,11 @@ class HasamiShogiGame():
                     # print("No need to check right, the space is empty")
                     return False
                 elif self.get_square_occupant(self.index_to_move(space_right)) != self.get_active_player():
-                    print("Found an opponent piece adjacent below.")
+                    # print("Found an opponent piece adjacent right.")
                     if maybe_caps is None:
                         maybe_caps = []
                     maybe_caps.append(space_right)
-                    print(maybe_caps)
+                    # print(maybe_caps)
                     if int(space_right[1]) + 1 <= 8:
                         return self.horizontal_capture_right(start_loc, maybe_caps, pos + 1)
                     else:
@@ -440,11 +433,11 @@ class HasamiShogiGame():
                 # print("No need to check left, the space is empty")
                 return False
             elif self.get_square_occupant(self.index_to_move(space_left)) != self.get_active_player():
-                print("Found an opponent piece adjacent left.")
+                # print("Found an opponent piece adjacent left.")
                 if maybe_caps is None:
                     maybe_caps = []
                 maybe_caps.append(space_left)
-                print(maybe_caps)
+                # print(maybe_caps)
                 if (int(space_left[1]) - 1) >= 0:
                     return self.horizontal_capture_left(start_loc, maybe_caps, pos - 1)
                 else:
@@ -589,7 +582,7 @@ class HasamiShogiGame():
                 if maybe_caps is None:
                     maybe_caps = []
                 maybe_caps.append(space_above)
-                print(maybe_caps)
+                # print(maybe_caps)
                 if int(space_above) - 10 >= 0:
                     return self.vertical_capture_up(start_loc, maybe_caps, pos - 10)
                 else:
@@ -639,7 +632,7 @@ class HasamiShogiGame():
                 if maybe_caps is None:
                     maybe_caps = []
                 maybe_caps.append(space_below)
-                print(maybe_caps)
+                # print(maybe_caps)
                 if int(space_below) + 10 <= 88:
                     return self.vertical_capture_down(start_loc, maybe_caps, pos + 10)
                 else:
