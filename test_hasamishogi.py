@@ -363,19 +363,27 @@ class HasamiTests(unittest.TestCase):
         game.display_game()
 
     def test_23_triple_scenarios_top(self):
-            """Captures left, right, and downwards."""
-            game = HasamiShogiGame()
-            game.make_move('i1', 'i1')
-            game.make_move('i1', 'i1')
-            game.make_move('i1', 'i1')
-            game.make_move('i1', 'i1')
-            game.make_move('i1', 'i1')
-            game.make_move('a1', 'b1')
-            game.make_move('a1', 'b1')
-            game.make_move('a1', 'b1')
-            game.make_move('i1', 'i2')
-            game.make_move('i1', 'h1')
-            game.make_move('a1', 'b1')
+        """Captures left, right, and downwards."""
+        game = HasamiShogiGame()
+        game.make_move('i1', 'i1')
+        game.make_move('i1', 'i1')
+        game.make_move('i1', 'i1')
+        game.make_move('i1', 'i1')
+        game.make_move('i1', 'i1')
+        game.make_move('a1', 'b1')
+        game.make_move('a1', 'b1')
+        game.make_move('a1', 'b1')
+        game.make_move('i1', 'i2')
+        game.make_move('i1', 'h1')
+        game.make_move('a1', 'b1')
+
+    def test_24_gradescope(self):
+        game = HasamiShogiGame()
+        game.make_move('i4','d4')
+        game.make_move('a5','d5')
+        game.display_game()
+
+
 
 
 

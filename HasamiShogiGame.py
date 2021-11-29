@@ -394,7 +394,7 @@ class HasamiShogiGame():
                     else:
                         return False
 
-    def capture_right(self, start_loc):
+    def capture_left(self, start_loc):
         """Helper function for horizontal_capture_left.
 
         Args:
@@ -697,8 +697,8 @@ class HasamiShogiGame():
         if move:
             self.capture_up(end)
             self.capture_down(end)
-            self.horizontal_capture_right(end)
-            self.horizontal_capture_left(end)
+            self.capture_right(end)
+            self.capture_left(end)
             self.corner_capture(end)
             self.next_turn()
             return True
@@ -706,6 +706,8 @@ class HasamiShogiGame():
 def main():
     game = HasamiShogiGame()
     game.display_game()
+    game.make_move('i4','d4')
+    game.make_move('a5','d5')
     game.make_move('i2','g2')
     print(game.get_active_player())
     game.make_move('g2','h2')
