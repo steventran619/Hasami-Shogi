@@ -140,9 +140,8 @@ class HasamiShogiGame():
         """Converts the move to an index for the _game_board's list parameters
         allowing for spaces of a-i and 1-9.
         Returns:
-            index (str): move to make is horizontal
-            VERTICAL: move to make is vertical
-            None:   Illegal move request (i.e. diagonal, non-existent space)
+            False: an invalid square is being requested
+            Index (str):   string for the list of lists
         """
         allowed = ['a','b','c','d','e','f','g','h','i']
         index = ''
