@@ -231,7 +231,7 @@ class HasamiShogiGame():
             return "VERTICAL"
         else:
 #            print("An illegal move type is requested. Please try again.")
-            return None
+            return False
                 
     def horizontal_move(self, start_loc, end_loc, pos = None):
         """Checks to see if there are any pieces between the start_loc to the
@@ -340,6 +340,15 @@ class HasamiShogiGame():
             print("Invalid Move Vertically")
             return False
 
+    def capture_right(self, start_loc):
+        """Helper function for horizontal_capture_right.
+
+        Args:
+            start_loc (str): a location with an active piece 
+
+        """
+        return self.horizontal_capture_right(start_loc)
+
     def horizontal_capture_right(self, start_loc, maybe_caps = None, pos = None):
         """After a valid move check, determines if the current move is
         horizontal to an opponent's piece. If so check to see if another
@@ -385,7 +394,16 @@ class HasamiShogiGame():
                         return self.horizontal_capture_right(start_loc, maybe_caps, pos + 1)
                     else:
                         return False
-    
+
+    def capture_right(self, start_loc):
+        """Helper function for horizontal_capture_left.
+
+        Args:
+            start_loc (str): a location with an active piece 
+
+        """
+        return self.horizontal_capture_left(start_loc)
+
     def horizontal_capture_left(self, start_loc, maybe_caps = None, pos = None):
         """After a valid move check, determines if the current move is
         horizontal to an opponent's piece. If so check to see if another
@@ -523,6 +541,15 @@ class HasamiShogiGame():
                 possible_corner = True
         return possible_corner
 
+    def capture_up(self, start_loc):
+        """Helper function for vertical_capture_up.
+
+        Args:
+            start_loc (str): a location with an active piece 
+
+        """
+        return self.vertical_capture_up(start_loc)
+
     def vertical_capture_up(self, start_loc, maybe_caps = None, pos = None):
         """After a valid move check, determines if the current move is vertical to an opponent's piece. If so check to see if another active player's piece is on the opposite side.
 
@@ -566,7 +593,15 @@ class HasamiShogiGame():
                     return self.vertical_capture_up(start_loc, maybe_caps, pos - 10)
                 else:
                     return False
-                
+    def capture_down(self, start_loc):
+        """Helper function for vertical_capture_down.
+
+        Args:
+            start_loc (str): a location with an active piece 
+
+        """
+        return self.vertical_capture_down(start_loc)
+
     def vertical_capture_down(self, start_loc, maybe_caps = None, pos = None):
         """After a valid move check, determines if the current move is vertical to an opponent's piece. If so check to see if another active player's piece is on the opposite side.
 
@@ -661,8 +696,8 @@ class HasamiShogiGame():
                 print(f"Invalid Turn\nCurrent Player: {self.get_active_player()}")
         # After any successful move, scan the ending space for possible captures.
         if move:
-            self.vertical_capture_up(end)
-            self.vertical_capture_down(end)
+            self.capture_up(end)
+            self.capture_down(end)
             self.horizontal_capture_right(end)
             self.horizontal_capture_left(end)
             self.corner_capture(end)
