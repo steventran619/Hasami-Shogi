@@ -192,8 +192,9 @@ class HasamiShogiGame():
         """
         # print(f"Square being checked for occupant: {square}")
 #       print(f"Checking for square occupant in space {square}")
-        row = int(square[0])
-        column = int(square[1])
+        index = self.move_to_index(square)
+        row = int(index[0])
+        column = int(index[1])
         if self._game_board[row][column] == "B":
             # print(f"Black occupies {square}")
             return "BLACK"
@@ -263,7 +264,7 @@ class HasamiShogiGame():
         index =  start_loc[0] + str(start_col)
         # print(f"position is now {pos}")
         # print(f"{start_col} trying to reach {end_col}")
-        if self.get_square_occupant(end_loc) != "NONE":
+        if self.get_square_occupant(self.index_to_move(end_loc)) != "NONE":
             print("Cannot move to a non-empty space.")
             return False
         if start_col == end_col:
@@ -278,7 +279,7 @@ class HasamiShogiGame():
                 self.set_empty(start_loc)
                 print(f"Black moved successfully {index}")
                 return True
-        elif self.get_square_occupant(index) == "NONE":
+        elif self.get_square_occupant(self.index_to_move(index)) == "NONE":
             # print(f"checking occupant for index {index}")
             return self.horizontal_move(start_loc, end_loc, pos + direction)
         else:
@@ -315,9 +316,11 @@ class HasamiShogiGame():
         start_row = int(start_loc[0]) + pos
         end_row = int(end_loc[0])
         index = str(start_row) + start_loc[1]
+        move = self.index_to_move(index)
+        move_loc = self.index_to_move(end_loc)
         # print(f"position is now {pos}")
         # print(f"{start_row} trying to reach {end_row}")
-        if self.get_square_occupant(end_loc) != "NONE":
+        if self.get_square_occupant(move_loc) != "NONE":
             print("Cannot move to a non-empty space.")
             return False
         if start_row == end_row:
@@ -332,7 +335,7 @@ class HasamiShogiGame():
                 self.set_black(end_loc)
                 self.set_empty(start_loc)
                 return True
-        elif self.get_square_occupant(index) == "NONE":
+        elif self.get_square_occupant(move) == "NONE":
             # print(f"checking occupant for index {index}")
             return self.vertical_move(start_loc, end_loc, pos + direction)
         else:
@@ -369,10 +372,10 @@ class HasamiShogiGame():
                 # print(f"The space to the right is {space_right}")
                 # Scenario for an opponent piece above, but no matching active
                 if maybe_caps is not None:
-                    if self.get_square_occupant(space_right) == "NONE":
+                    if self.get_square_occupant(self.index_to_move(space_right)) == "NONE":
                         return False
                     # Scenario for a sandwich/capture
-                    elif self.get_square_occupant(space_right) == self.get_active_player():
+                    elif self.get_square_occupant(self.index_to_move(space_right)) == self.get_active_player():
                         for captures in maybe_caps:
                             self.set_empty(captures)
                             if self.get_active_player() == "RED":
@@ -380,10 +383,10 @@ class HasamiShogiGame():
                             else:
                                 self.cap_red()
                 # print(f"\nRight_Capture: the space right is: {space_right}")
-                if self.get_square_occupant(space_right) == "NONE":
+                if self.get_square_occupant(self.index_to_move(space_right)) == "NONE":
                     # print("No need to check right, the space is empty")
                     return False
-                elif self.get_square_occupant(space_right) != self.get_active_player():
+                elif self.get_square_occupant(self.index_to_move(space_right)) != self.get_active_player():
                     print("Found an opponent piece adjacent below.")
                     if maybe_caps is None:
                         maybe_caps = []
@@ -422,10 +425,10 @@ class HasamiShogiGame():
             space_left = str(int(start_loc) + pos).zfill(2)
             # Scenario for an opponent piece left, but no matching active
             if maybe_caps is not None:
-                if self.get_square_occupant(space_left) == "NONE":
+                if self.get_square_occupant(self.index_to_move(space_left)) == "NONE":
                     return False
                 # Scenario for a sandwich/capture
-                elif self.get_square_occupant(space_left) == self.get_active_player():
+                elif self.get_square_occupant(self.index_to_move(space_left)) == self.get_active_player():
                     for captures in maybe_caps:
                         self.set_empty(captures)
                         if self.get_active_player() == "RED":
@@ -433,10 +436,10 @@ class HasamiShogiGame():
                         else:
                             self.cap_red()
             # print(f"\nLeft_Capture: the space left is {space_left}")
-            if self.get_square_occupant(space_left) == "NONE":
+            if self.get_square_occupant(self.index_to_move(space_left)) == "NONE":
                 # print("No need to check left, the space is empty")
                 return False
-            elif self.get_square_occupant(space_left) != self.get_active_player():
+            elif self.get_square_occupant(self.index_to_move(space_left)) != self.get_active_player():
                 print("Found an opponent piece adjacent left.")
                 if maybe_caps is None:
                     maybe_caps = []
@@ -487,13 +490,12 @@ class HasamiShogiGame():
                 return False # Should never get here
             
             # If the captured corner is empty, don't bother checking a corner scenario.
-            if self.get_square_occupant(self.move_to_index(active_corner[2])) == 'NONE':
+            if self.get_square_occupant(active_corner[2]) == 'NONE':
                 return False
 
             # Checks if the two trapping spaces belong to the active player, and if the captured corner belongs to the opponents.
-            if self.get_square_occupant(self.move_to_index(active_corner[0])) == \
-                    active_player and self.get_square_occupant(self.move_to_index( \
-                active_corner[1])) == active_player and self.get_square_occupant(self.move_to_index(active_corner[2])) != active_player:
+            if self.get_square_occupant(active_corner[0]) == \
+                    active_player and self.get_square_occupant(active_corner[1]) == active_player and self.get_square_occupant(active_corner[2]) != active_player:
                 self.set_empty(self.move_to_index(active_corner[2]))
                 if active_player == "RED":
                     self.cap_black()
@@ -568,10 +570,10 @@ class HasamiShogiGame():
             # print(f"The space above is {space_above}")
             # Scenario for an opponent piece above, but no matching active
             if maybe_caps is not None:
-                if self.get_square_occupant(space_above) == "NONE":
+                if self.get_square_occupant(self.index_to_move(space_above)) == "NONE":
                     return False
                 # Scenario for a sandwich/capture
-                elif self.get_square_occupant(space_above) == self.get_active_player():
+                elif self.get_square_occupant(self.index_to_move(space_above)) == self.get_active_player():
                     for captures in maybe_caps:
                         self.set_empty(captures)
                         if self.get_active_player() == "RED":
@@ -579,10 +581,10 @@ class HasamiShogiGame():
                         else:
                             self.cap_red()
             # print(f"\nVertical_Capture: the space above is {space_above}")
-            if self.get_square_occupant(space_above) == "NONE":
+            if self.get_square_occupant(self.index_to_move(space_above)) == "NONE":
                 # print("No need to check above, the space is empty")
                 return False
-            elif self.get_square_occupant(space_above) != self.get_active_player():
+            elif self.get_square_occupant(self.index_to_move(space_above)) != self.get_active_player():
                 # print("Found an opponent piece adjacent above.")
                 if maybe_caps is None:
                     maybe_caps = []
@@ -618,10 +620,10 @@ class HasamiShogiGame():
             space_below = (str(int(start_loc) + pos)).zfill(2)
             # Scenario for an opponent piece above, but no matching active
             if maybe_caps is not None:
-                if self.get_square_occupant(space_below) == "NONE":
+                if self.get_square_occupant(self.index_to_move(space_below)) == "NONE":
                     return False
                 # Scenario for a sandwich/capture
-                elif self.get_square_occupant(space_below) == self.get_active_player():
+                elif self.get_square_occupant(self.index_to_move(space_below)) == self.get_active_player():
                     for captures in maybe_caps:
                         self.set_empty(captures)
                         if self.get_active_player() == "RED":
@@ -629,10 +631,10 @@ class HasamiShogiGame():
                         else:
                             self.cap_red()
             # print(f"\nVertical_Capture: the space below is {space_below}")
-            if self.get_square_occupant(space_below) == "NONE":
+            if self.get_square_occupant(self.index_to_move(space_below)) == "NONE":
                 # print("No need to check below, the space is empty")
                 return False
-            elif self.get_square_occupant(space_below) != self.get_active_player():
+            elif self.get_square_occupant(self.index_to_move(space_below)) != self.get_active_player():
                 # print("Found an opponent piece adjacent below.")
                 if maybe_caps is None:
                     maybe_caps = []
@@ -677,7 +679,7 @@ class HasamiShogiGame():
         # Checks if the starting square belongs to the active player's turn
         move = False
         if start and end:
-            if self.get_square_occupant(start) == self.get_active_player():
+            if self.get_square_occupant(start_loc) == self.get_active_player():
                 print(f"Your turn: {self.get_active_player()}")
                 # Check if move is possible
                 # print(f"Moving from {start} to {end}")
