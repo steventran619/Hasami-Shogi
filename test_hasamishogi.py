@@ -143,33 +143,56 @@ class HasamiTests(unittest.TestCase):
     #     game.get_num_captured_pieces("RED")
     #     game.get_num_captured_pieces("BLACK")
 
-    def test_12_capture_left_multiples(self):
-        """Checks if multiple pieces are captured when checking left."""
-        game = HasamiShogiGame()
-        game.make_move('i4','h4')
-        game.make_move('a3','h3')
-        game.make_move('i5','h5')
-        game.make_move('a9','b9')
-        game.make_move('i6','h6')
-        game.make_move('a7','h7')
-        game.display_game()
-        game.get_num_captured_pieces("RED")
-        game.get_num_captured_pieces("BLACK")
-        self.assertEqual(3, game.get_num_captured_pieces("BLACK"))
+    # def test_12_capture_left_multiples(self):
+    #     """Checks if multiple pieces are captured when checking left."""
+    #     game = HasamiShogiGame()
+    #     game.make_move('i4','h4')
+    #     game.make_move('a3','h3')
+    #     game.make_move('i5','h5')
+    #     game.make_move('a9','b9')
+    #     game.make_move('i6','h6')
+    #     game.make_move('a7','h7')
+    #     game.display_game()
+    #     game.get_num_captured_pieces("RED")
+    #     game.get_num_captured_pieces("BLACK")
+    #     self.assertEqual(3, game.get_num_captured_pieces("BLACK"))
 
 
-    def test_13_capture_right_multiples(self):
-        """Checks if multiple pieces are captured when checking right."""
+    # def test_13_capture_right_multiples(self):
+    #     """Checks if multiple pieces are captured when checking right."""
+    #     game = HasamiShogiGame()
+    #     game.make_move('i4','h4')
+    #     game.make_move('a7','h7')
+    #     game.make_move('i5','h5')
+    #     game.make_move('a9','b9')
+    #     game.make_move('i6','h6')
+    #     game.make_move('a3','h3')
+    #     game.display_game()
+    #     game.get_num_captured_pieces("RED")
+    #     game.get_num_captured_pieces("BLACK")
+    #     self.assertEqual(3, game.get_num_captured_pieces("BLACK"))
+
+    def test_14_corner_scenarios(self):
+        """Edge scenarios along the borders. Includes multi-capture. (NOT CORNERS)"""
         game = HasamiShogiGame()
-        game.make_move('i4','h4')
-        game.make_move('a7','h7')
-        game.make_move('i5','h5')
-        game.make_move('a9','b9')
-        game.make_move('i6','h6')
-        game.make_move('a3','h3')
+        game.make_move('i2','g2')
+        game.make_move('a1','h1')
+        game.make_move('g2','g1')
+        game.make_move('a2','i2')
+        game.make_move('i9','b9')
+        game.make_move('a8','c8')
+        game.make_move('g1','a1')
+        game.make_move('c8','c9')
+        game.make_move('i8','a8')
+        game.make_move('c9','i9')
+        # game.display_game()
+
+        game.make_move('a1','a2')
+        game.make_move('i9', 'i8')
+
         game.display_game()
-        game.get_num_captured_pieces("RED")
-        game.get_num_captured_pieces("BLACK")
-        self.assertEqual(3, game.get_num_captured_pieces("BLACK"))
+
+
+
 if __name__ == '__main__':
     unittest.main()

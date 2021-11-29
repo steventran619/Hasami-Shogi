@@ -47,6 +47,8 @@ class HasamiShogiGame():
         self._red_caps = 0
         self._black_caps = 0
         # determine if the game is still on-going.
+        # while self._red_caps < 8 and self._black_caps < 8:
+        #     self._game_state = "UNFINISHED"
 
     def __repr__(self) -> str:
         """Printable Format of the Board Game State"""
@@ -87,6 +89,13 @@ class HasamiShogiGame():
         col = int(space[1])
         self._game_board[row][col] = "_"
 
+    def set_game_state(self):
+        """Sets/checks the game state after each turn."""
+        if self.get_num_captured_pieces("RED") >= 8:
+            self._game_state = "BLACK_WON"
+        elif self.get_num_captured_pieces("BLACK") >= 8:
+            self._game_state = "RED WON"
+
     def get_game_state(self):
         """Function determines the current progress of the game. If there's a
         current winner or if its still "UNFINISHED"".
@@ -96,7 +105,7 @@ class HasamiShogiGame():
             RED_WON (str): when black captures >= 8
             BLACK_WON (str): when red captures >= 8
         """
-        if self._game_state is None:
+        if self.get_num_captured_pieces("RED") <= 8 and self.get_num_captured_pieces("BLACK"):
             return "UNFINISHED"
         elif self._game_state == "RED_WON":
             return "RED_WON"
@@ -120,11 +129,11 @@ class HasamiShogiGame():
         """Returns the number of captured pieces for the specified color.
         Used to determine if there's a winner after each move."""
         if color.upper() == "RED":
-            print(f"\nRED pieces captured: {self._red_caps}")
+            # print(f"\nRED pieces captured: {self._red_caps}")
             return self._red_caps
         if color.upper() == "BLACK":
             # Returns the number of red pieces captured
-            print(f"\nBLACK pieces captured: {self._black_caps}")
+            # print(f"\nBLACK pieces captured: {self._black_caps}")
             return self._black_caps
         else:
             # Raises some Error for inputting a correct color value.
@@ -340,7 +349,8 @@ class HasamiShogiGame():
 
         Args:
             start_loc (str): a location with an active piece 
-            end_loc (str): a valid location to move an active piece
+            maybe_caps (str): a list of indices of the potential capturable pieces
+            pos (int):  incrementer for checking the next squares
 
         Returns:
             True: Captures the opponent's piece piece. Updates number of captured pieces, and move_tracker
@@ -349,30 +359,34 @@ class HasamiShogiGame():
         if pos is None:
             pos = 1
         if self.check_right(start_loc):
-            space_right = str(int(start_loc) + pos)
-            # Scenario for an opponent piece above, but no matching active
-            if maybe_caps is not None:
+                space_right = (start_loc[0] + str(int(start_loc[1]) + pos)).zfill(2)
+                print(f"The space to the right is {space_right}")
+                # Scenario for an opponent piece above, but no matching active
+                if maybe_caps is not None:
+                    if self.get_square_occupant(space_right) == "NONE":
+                        return False
+                    # Scenario for a sandwich/capture
+                    elif self.get_square_occupant(space_right) == self.get_active_player():
+                        for captures in maybe_caps:
+                            self.set_empty(captures)
+                            if self.get_active_player() == "RED":
+                                self.cap_black()
+                            else:
+                                self.cap_red()
+                print(f"\nRight_Capture: the space right is: {space_right}")
                 if self.get_square_occupant(space_right) == "NONE":
+                    print("No need to check right, the space is empty")
                     return False
-                # Scenario for a sandwich/capture
-                elif self.get_square_occupant(space_right) == self.get_active_player():
-                    for captures in maybe_caps:
-                        self.set_empty(captures)
-                        if self.get_active_player() == "RED":
-                            self.cap_black()
-                        else:
-                            self.cap_red()
-            print(f"\nRight_Capture: the space right is {space_right}")
-            if self.get_square_occupant(space_right) == "NONE":
-                print("No need to check right, the space is empty")
-                return False
-            elif self.get_square_occupant(space_right) != self.get_active_player():
-                print("Found an opponent piece adjacent below.")
-                if maybe_caps is None:
-                    maybe_caps = []
-                maybe_caps.append(space_right)
-                print(maybe_caps)
-                return self.horizontal_capture_right(start_loc, maybe_caps, pos + 1)
+                elif self.get_square_occupant(space_right) != self.get_active_player():
+                    print("Found an opponent piece adjacent below.")
+                    if maybe_caps is None:
+                        maybe_caps = []
+                    maybe_caps.append(space_right)
+                    print(maybe_caps)
+                    if int(space_right[1]) + 1 <= 8:
+                        return self.horizontal_capture_right(start_loc, maybe_caps, pos + 1)
+                    else:
+                        return False
     
     def horizontal_capture_left(self, start_loc, maybe_caps = None, pos = None):
         """After a valid move check, determines if the current move is
@@ -390,7 +404,7 @@ class HasamiShogiGame():
         if pos is None:
             pos = -1
         if self.check_left(start_loc):
-            space_left = str(int(start_loc) + pos)
+            space_left = str(int(start_loc) + pos).zfill(2)
             # Scenario for an opponent piece left, but no matching active
             if maybe_caps is not None:
                 if self.get_square_occupant(space_left) == "NONE":
@@ -433,28 +447,28 @@ class HasamiShogiGame():
         pass
 
     def check_top(self, space):
-        """Checks if theres at least 2 spaces available above to score a capture"""
+        """Checks if theres at least 2 spaces available above to score a capture."""
         if int(space) - 20 < 0:
             return False
         else:
             return True
 
     def check_bottom(self, space):
-        """Checks if theres at least 2 spaces available below to score a capture"""
+        """Checks if theres at least 2 spaces available below to score a capture."""
         if int(space) + 20 > 88:
             return False
         else:
             return True
     
     def check_left(self, space):
-        """Checks if theres at least 2 spaces available left to score a capture"""
+        """Checks if theres at least 2 spaces available left to score a capture."""
         if int(space[1]) - 2 < 0:
             return False
         else:
             return True
 
     def check_right(self, space):
-        """Checks if theres at least 2 spaces available right to score a capture"""
+        """Checks if theres at least 2 spaces available right to score a capture."""
         if int(space[1]) + 2 > 8:
             return False
         else:
@@ -476,7 +490,8 @@ class HasamiShogiGame():
         if pos is None:
             pos = -10
         if self.check_top(start_loc):
-            space_above = str(int(start_loc) + pos)
+            space_above = (str(int(start_loc) + pos)).zfill(2)
+            print(f"The space above is {space_above}")
             # Scenario for an opponent piece above, but no matching active
             if maybe_caps is not None:
                 if self.get_square_occupant(space_above) == "NONE":
@@ -516,7 +531,7 @@ class HasamiShogiGame():
         if pos is None:
             pos = 10
         if self.check_bottom(start_loc):
-            space_below = str(int(start_loc) + pos)
+            space_below = (str(int(start_loc) + pos)).zfill(2)
             # Scenario for an opponent piece above, but no matching active
             if maybe_caps is not None:
                 if self.get_square_occupant(space_below) == "NONE":
