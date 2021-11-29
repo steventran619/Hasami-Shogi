@@ -203,19 +203,50 @@ class HasamiTests(unittest.TestCase):
         game.make_move('i9', 'b9')
         game.make_move('a8', 'c8')
         game.make_move('g1', 'a1')
-        game.make_move('c8', 'c9')
-        game.make_move('i8', 'a8')
-        game.make_move('c9', 'i9')
+        game.make_move('a9', 'a8')
+        game.make_move('b9', 'a9')
+        game.make_move('c8', 'h8')
         game.make_move('a1', 'a2')
-        game.make_move('i9', 'i8')
-        game.make_move('a2', 'a4')
-        game.make_move('i8', 'i3')
-        game.make_move('a4', 'i4')
+        state1 = game.get_game_state()
+        self.assertEqual("UNFINISHED", state1)
+        game.make_move('i2', 'h2')
+        game.make_move('a2', 'a8')
+        game.make_move('h2', 'i2')
+        game.make_move('a8', 'g8')
         game.display_game()
         state2 = game.get_game_state()
         self.assertEqual(state2, "BLACK_WON")
+        # Tests if a move is possible after the games been won.
+        move_after_won = game.make_move('i2', 'a2')
+        self.assertFalse(move_after_won)
+        game.display_game()
         # Add Test for RED_WON
 
+    # def test_16_corner_check(self):
+    #     """Text"""
+    #     game = HasamiShogiGame()
+    #     game.make_move('i9', 'b9')
+    #     game.make_move('a8', 'c8')
+    #     game.make_move('i8', 'd8')
+    #     game.make_move('c8', 'c2')
+    #     game.make_move('d8', 'a8')
+    #     game.display_game()
+    #     state = game.get_game_state()
+    #     self.assertEqual("UNFINISHED", state)
+    #     red_caps = game.get_num_captured_pieces('red')
+    #     self.assertEqual(1, red_caps)
+
+    def test_xx_(self):
+        """Text"""
+        pass
+
+    def test_xx_(self):
+        """Text"""
+        pass
+
+    def test_xx_(self):
+        """Text"""
+        pass
 
 if __name__ == '__main__':
     unittest.main()

@@ -197,13 +197,13 @@ class HasamiShogiGame():
         row = int(square[0])
         column = int(square[1])
         if self._game_board[row][column] == "B":
-            print(f"Black occupies {square}")
+            # print(f"Black occupies {square}")
             return "BLACK"
         elif self._game_board[row][column] == "R":
-            print(f"Red occupies {square}")
+            # print(f"Red occupies {square}")
             return "RED"
         elif self._game_board[row][column] == "_":
-            print(f"...its empty...")
+            # print(f"...its empty...")
             return "NONE"
         else:
             print("Something is wrong in get_square_occupant")
@@ -427,9 +427,13 @@ class HasamiShogiGame():
                     maybe_caps = []
                 maybe_caps.append(space_left)
                 print(maybe_caps)
-                return self.horizontal_capture_left(start_loc, maybe_caps, pos - 1)
+                if int(space_left[1]) - 1 < 0:
+                    return self.horizontal_capture_left(start_loc, maybe_caps, pos - 1)
+                else:
+                    return False
 
-    def corner_capture(self, start_loc, end_loc):
+
+    def corner_capture(self, start_loc):
         """If the current move is nearby an opponent's corner piece, check to see if
         another active player's piece resides on the nearby corner.
         Note: Corner capturesho can only occur if the active player moves to one
@@ -444,7 +448,39 @@ class HasamiShogiGame():
             True: Captures the corner piece. Updates the active player, and move_tracker
             False: if corner capture condition is not met
         """
-        pass
+        if self.check_corner(start_loc):
+            print("Moved to a corner spot")
+            top_right = ['a8', 'b9', 'a9']
+            top_left = ['b1', 'a2', 'a1']
+            bot_right = ['i8', 'h9', 'i9']
+            bot_left = ['h1', 'i2', 'i0']
+            active_player = self.get_active_player()
+            if self.index_to_move(start_loc) in top_right:
+                if top_right[2] == 'NONE':
+                    return False
+                if self.get_square_occupant(self.move_to_index(top_right[0])) == \
+                        active_player \
+                        and self.get_square_occupant(self.move_to_index(
+                    top_right[1])) == \
+                        active_player and \
+                        self.get_square_occupant(self.move_to_index(
+                            top_right[2])) != \
+                        active_player:
+                    self.set_empty(self.move_to_index(top_right[2]))
+                    if active_player == "RED":
+                        self.cap_black()
+                    else:
+                        self.cap_red()
+                    return True
+                print("TOP_RIGHT")
+            elif self.index_to_move(start_loc) in top_left:
+                print("TOP_LEFT")
+            elif self.index_to_move(start_loc) in bot_right:
+                print("BOT_RIGHT")
+            elif self.index_to_move(start_loc) in bot_left:
+                print("BOT_LEFT")
+            else:
+                return False
 
     def check_top(self, space):
         """Checks if theres at least 2 spaces available above to score a capture."""
@@ -474,6 +510,15 @@ class HasamiShogiGame():
         else:
             return True
 
+    def check_corner(self, space):
+        """Checks if the space moved to can capture a potential corner piece."""
+        corners = []
+        corner_traps = ['a2', 'b1', 'a8', 'b9', 'h1', 'i2', 'i8', 'h9']
+        possible_corner = False
+        for trap in range(len(corner_traps)):
+            if space == self.move_to_index(corner_traps[trap]):
+                possible_corner = True
+        return possible_corner
 
     def vertical_capture_up(self, start_loc, maybe_caps = None, pos = None):
         """After a valid move check, determines if the current move is vertical to an opponent's piece. If so check to see if another active player's piece is on the opposite side.
@@ -582,6 +627,9 @@ class HasamiShogiGame():
                 empty location again. Updates the active player, and move_tracker
             False: if the current move is blocked by any pieces
         """
+        game_state = self.get_game_state()
+        if game_state == "BLACK_WON" or game_state == "RED_WON":
+            return False
         start = self.move_to_index(start_loc)
         end = self.move_to_index(end_loc)
         # Checks if the starting square belongs to the active player's turn
@@ -609,6 +657,7 @@ class HasamiShogiGame():
             self.vertical_capture_down(end)
             self.horizontal_capture_right(end)
             self.horizontal_capture_left(end)
+            self.corner_capture(end)
             self.next_turn()
 
 def main():
