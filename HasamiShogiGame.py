@@ -701,6 +701,7 @@ class HasamiShogiGame():
             self.horizontal_capture_left(end)
             self.corner_capture(end)
             self.next_turn()
+            return True
 
 def main():
     game = HasamiShogiGame()
