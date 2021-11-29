@@ -172,26 +172,49 @@ class HasamiTests(unittest.TestCase):
     #     game.get_num_captured_pieces("BLACK")
     #     self.assertEqual(3, game.get_num_captured_pieces("BLACK"))
 
-    def test_14_corner_scenarios(self):
-        """Edge scenarios along the borders. Includes multi-capture. (NOT CORNERS)"""
+    # def test_14_corner_scenarios(self):
+    #     """Edge scenarios along the borders. Includes multi-capture. (NOT CORNERS)"""
+    #     game = HasamiShogiGame()
+    #     game.make_move('i2','g2')
+    #     game.make_move('a1','h1')
+    #     game.make_move('g2','g1')
+    #     game.make_move('a2','i2')
+    #     game.make_move('i9','b9')
+    #     game.make_move('a8','c8')
+    #     game.make_move('g1','a1')
+    #     game.make_move('c8','c9')
+    #     game.make_move('i8','a8')
+    #     game.make_move('c9','i9')
+    #     # game.display_game()
+    #     game.make_move('a1','a2')
+    #     game.make_move('i9', 'i8')
+    #     game.display_game()
+
+    def test_15_game_state(self):
+        "Tests the game state scenarios."
         game = HasamiShogiGame()
-        game.make_move('i2','g2')
-        game.make_move('a1','h1')
-        game.make_move('g2','g1')
-        game.make_move('a2','i2')
-        game.make_move('i9','b9')
-        game.make_move('a8','c8')
-        game.make_move('g1','a1')
-        game.make_move('c8','c9')
-        game.make_move('i8','a8')
-        game.make_move('c9','i9')
-        # game.display_game()
-
-        game.make_move('a1','a2')
+        state = game.get_game_state()
+        print(state)
+        self.assertEqual(state, "UNFINISHED")
+        game.make_move('i2', 'g2')
+        game.make_move('a1', 'h1')
+        game.make_move('g2', 'g1')
+        game.make_move('a2', 'i2')
+        game.make_move('i9', 'b9')
+        game.make_move('a8', 'c8')
+        game.make_move('g1', 'a1')
+        game.make_move('c8', 'c9')
+        game.make_move('i8', 'a8')
+        game.make_move('c9', 'i9')
+        game.make_move('a1', 'a2')
         game.make_move('i9', 'i8')
-
+        game.make_move('a2', 'a4')
+        game.make_move('i8', 'i3')
+        game.make_move('a4', 'i4')
         game.display_game()
-
+        state2 = game.get_game_state()
+        self.assertEqual(state2, "BLACK_WON")
+        # Add Test for RED_WON
 
 
 if __name__ == '__main__':
