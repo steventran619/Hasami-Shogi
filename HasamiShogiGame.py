@@ -43,7 +43,7 @@ class HasamiShogiGame():
             ["_", "_", "_", "_", "_", "_", "_", "_", "_"],
             ["B", "B", "B", "B", "B", "B", "B", "B", "B"]]
         self._move_tracker = 1      # Tracks the number of moves performed in the game
-        self._game_state = "UNFINISHED"     # Will be used for while loop to
+        # self._game_state = "UNFINISHED"     # Will be used for while loop to
         self._red_caps = 0
         self._black_caps = 0
         # determine if the game is still on-going.
@@ -138,7 +138,8 @@ class HasamiShogiGame():
             return self._black_caps
         else:
             # Raises some Error for inputting a correct color value.
-            pass
+            print("Invalid selection, please enter either 'RED' or 'BLACK'")
+            return False
 
     # This might work as a wrapper. Converts to human friendly tiles (a-i)(1-9)
     def move_to_index(self, move):
@@ -186,12 +187,16 @@ class HasamiShogiGame():
         return move
 
     def get_square_occupant(self, square = ""):
-        """Determines if the square is occupied or not.
+        """Determines if the square is occupied or not. Note: Needs to be "indexed" first.
+        Use function move_to_index() prior to using this function.
 
         Returns:
             "RED":   if square is occupied by a "R" piece
             "BLACK": if square is occupied by a "B" piece
             "NONE":  if square is empty; occupied by a "_"
+
+        Args:
+            square (str, optional): array index (0-8)(0-8). Defaults to "".
         """
         print(f"Square being checked for occupant: {square}")
 #       print(f"Checking for square occupant in space {square}")
@@ -209,7 +214,6 @@ class HasamiShogiGame():
         else:
             print("Something is wrong in get_square_occupant")
 
-    # Move Verification Functions
     def move_type(self, start_loc, end_loc):
         """After checking the start and end locations are valid, this function
         determines what kind of movement direction is being requested.
@@ -428,9 +432,10 @@ class HasamiShogiGame():
                     maybe_caps = []
                 maybe_caps.append(space_left)
                 print(maybe_caps)
-                if int(space_left[1]) - 1 < 0:
+                if (int(space_left[1]) - 1) >= 0:
                     return self.horizontal_capture_left(start_loc, maybe_caps, pos - 1)
                 else:
+                    print("Hor_Cap: Reached out of bounds")
                     return False
 
 
@@ -455,7 +460,7 @@ class HasamiShogiGame():
             top_right = ['a8', 'b9', 'a9']
             top_left = ['b1', 'a2', 'a1']
             bot_right = ['i8', 'h9', 'i9']
-            bot_left = ['h1', 'i2', 'i0']
+            bot_left = ['h1', 'i2', 'i1']
 
             active_player = self.get_active_player()
             
@@ -472,18 +477,13 @@ class HasamiShogiGame():
                 return False # Should never get here
             
             # If the captured corner is empty, don't bother checking a corner scenario.
-            if active_corner[2] == 'NONE':
+            if self.get_square_occupant(self.move_to_index(active_corner[2])) == 'NONE':
                 return False
 
             # Checks if the two trapping spaces belong to the active player, and if the captured corner belongs to the opponents.
             if self.get_square_occupant(self.move_to_index(active_corner[0])) == \
-                    active_player \
-                    and self.get_square_occupant(self.move_to_index(
-                active_corner[1])) == \
-                    active_player and \
-                    self.get_square_occupant(self.move_to_index(
-                        active_corner[2])) != \
-                    active_player:
+                    active_player and self.get_square_occupant(self.move_to_index( \
+                active_corner[1])) == active_player and self.get_square_occupant(self.move_to_index(active_corner[2])) != active_player:
                 self.set_empty(self.move_to_index(active_corner[2]))
                 if active_player == "RED":
                     self.cap_black()
@@ -542,7 +542,7 @@ class HasamiShogiGame():
             True: Captures the opponent's piece piece. Updates number of captured pieces, and move_tracker
             False: if vertical capture condition is not met
         """
-        # check_top
+    
         if pos is None:
             pos = -10
         if self.check_top(start_loc):
@@ -570,8 +570,11 @@ class HasamiShogiGame():
                     maybe_caps = []
                 maybe_caps.append(space_above)
                 print(maybe_caps)
-                return self.vertical_capture_up(start_loc, maybe_caps, pos - 10)
-
+                if int(space_above) - 10 < 0:
+                    return self.vertical_capture_up(start_loc, maybe_caps, pos - 10)
+                else:
+                    return False
+                
     def vertical_capture_down(self, start_loc, maybe_caps = None, pos = None):
         """After a valid move check, determines if the current move is vertical to an opponent's piece. If so check to see if another active player's piece is on the opposite side.
 
@@ -583,7 +586,6 @@ class HasamiShogiGame():
             True: Captures the opponent's piece piece. Updates number of captured pieces, and move_tracker
             False: if vertical capture condition is not met
         """
-        # check_top
         if pos is None:
             pos = 10
         if self.check_bottom(start_loc):
@@ -610,7 +612,10 @@ class HasamiShogiGame():
                     maybe_caps = []
                 maybe_caps.append(space_below)
                 print(maybe_caps)
-                return self.vertical_capture_up(start_loc, maybe_caps, pos + 10)
+                if int(space_below) + 10 <= 88:
+                    return self.vertical_capture_down(start_loc, maybe_caps, pos + 10)
+                else:
+                    return False
     
     def next_turn(self):
         """Increases the move tracker after a successful turn."""
@@ -662,7 +667,7 @@ class HasamiShogiGame():
                 print(f"Your turn: {self.get_active_player()}")
             else:
                 print(f"Invalid Turn\nCurrent Player: {self.get_active_player()}")
-        # After any successful move, scan the areas for possible captures.
+        # After any successful move, scan the ending space for possible captures.
         if move:
             self.vertical_capture_up(end)
             self.vertical_capture_down(end)

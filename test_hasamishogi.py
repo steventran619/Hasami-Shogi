@@ -190,84 +190,156 @@ class HasamiTests(unittest.TestCase):
     #     game.make_move('i9', 'i8')
     #     game.display_game()
 
-    # def test_15_game_state(self):
-    #     "Tests the game state scenarios."
-    #     game = HasamiShogiGame()
-    #     state = game.get_game_state()
-    #     print(state)
-    #     self.assertEqual(state, "UNFINISHED")
-    #     game.make_move('i2', 'g2')
-    #     game.make_move('a1', 'h1')
-    #     game.make_move('g2', 'g1')
-    #     game.make_move('a2', 'i2')
-    #     game.make_move('i9', 'b9')
-    #     game.make_move('a8', 'c8')
-    #     game.make_move('g1', 'a1')
-    #     game.make_move('a9', 'a8')
-    #     game.make_move('b9', 'a9')
-    #     game.make_move('c8', 'h8')
-    #     game.make_move('a1', 'a2')
-    #     state1 = game.get_game_state()
-    #     self.assertEqual("UNFINISHED", state1)
-    #     game.make_move('i2', 'h2')
-    #     game.make_move('a2', 'a8')
-    #     game.make_move('h2', 'i2')
-    #     game.make_move('a8', 'g8')
-    #     game.display_game()
-    #     state2 = game.get_game_state()
-    #     self.assertEqual(state2, "BLACK_WON")
-    #     # Tests if a move is possible after the games been won.
-    #     move_after_won = game.make_move('i2', 'a2')
-    #     self.assertFalse(move_after_won)
-    #     game.display_game()
-        # Add Test for RED_WON
-
-    def test_16_corner_check_top_right(self):
-        """Tests a capture scenario for the top right corner."""
+    def test_15_game_state(self):
+        "Tests the game state scenarios."
         game = HasamiShogiGame()
+        state = game.get_game_state()
+        print(state)
+        self.assertEqual(state, "UNFINISHED")
+        game.make_move('i2', 'g2')
+        game.make_move('a1', 'h1')
+        game.make_move('g2', 'g1')
+        game.display_game()
+        game.make_move('a2', 'i2')
         game.make_move('i9', 'b9')
         game.make_move('a8', 'c8')
-        game.make_move('i8', 'd8')
-        game.make_move('c8', 'c2')
-        game.make_move('d8', 'a8')
+        game.make_move('g1', 'a1')
+        game.make_move('a9', 'a8')
+        game.make_move('b9', 'a9')
+        game.make_move('c8', 'h8')
+        game.display_game()
+        game.get_square_occupant('01')
+        game.make_move('a1', 'a2')
+        state1 = game.get_game_state()
+        self.assertEqual("UNFINISHED", state1)
+        
+
+    # def test_16_corner_check_top_right(self):
+    #     """Tests a capture scenario for the top right corner."""
+    #     game = HasamiShogiGame()
+    #     game.make_move('i9', 'b9')
+    #     game.make_move('a8', 'c8')
+    #     game.make_move('i8', 'd8')
+    #     game.make_move('c8', 'c2')
+    #     game.make_move('d8', 'a8')
+    #     game.display_game()
+    #     state = game.get_game_state()
+    #     self.assertEqual("UNFINISHED", state)
+    #     red_caps = game.get_num_captured_pieces('red')
+    #     self.assertEqual(1, red_caps)
+
+    # def test_17_corner_check_top_left(self):
+    #     """Tests a capture scenario for the top left corner."""
+    #     game = HasamiShogiGame()
+    #     game._game_board = [["R", "B", "R", "R", "R", "R", "R", "R", "B"],
+    #         ["_", "_", "_", "_", "_", "_", "_", "_", "_"],
+    #         ["_", "_", "_", "_", "_", "_", "_", "_", "_"],
+    #         ["_", "_", "_", "_", "_", "_", "_", "_", "_"],
+    #         ["_", "_", "_", "_", "_", "_", "_", "_", "_"],
+    #         ["_", "_", "_", "_", "_", "_", "_", "_", "_"],
+    #         ["_", "_", "_", "_", "_", "_", "_", "_", "_"],
+    #         ["_", "_", "_", "_", "_", "_", "_", "_", "_"],
+    #         ["B", "_", "B", "B", "B", "B", "B", "B", "R"]]
+    #     game.make_move('i1', 'b1')
+    #     game.display_game()
+    #     red_caps = game.get_num_captured_pieces('red')
+    #     self.assertEqual(1, red_caps)
+    #     game.make_move('i9','b9')
+    #     red_caps = game.get_num_captured_pieces('red')
+    #     self.assertEqual(1, red_caps)
+    #     black_caps = game.get_num_captured_pieces('black')
+    #     self.assertEqual(1, black_caps)
+
+    # def test_18_boundaries_vertical(self):
+    #     """Checks to make sure the vertical bounds are properly checked."""
+    #     game = HasamiShogiGame()
+    #     game._game_board = [["R", "_", "_", "_", "_", "_", "_", "_", "_"],
+    #         ["R", "_", "_", "_", "_", "_", "_", "_", "_"],
+    #         ["R", "_", "_", "_", "_", "_", "_", "_", "_"],
+    #         ["R", "_", "_", "_", "_", "_", "_", "_", "_"],
+    #         ["_", "B", "_", "_", "_", "_", "_", "_", "_"],
+    #         ["R", "_", "_", "_", "_", "_", "_", "_", "_"],
+    #         ["R", "_", "_", "_", "_", "_", "_", "_", "_"],
+    #         ["R", "_", "_", "_", "_", "_", "_", "_", "_"],
+    #         ["B", "_", "B", "B", "B", "B", "B", "B", "R"]]
+    #     game.make_move('e2','e1')
+    #     game.display_game()
+
+    def test_19_game_state_red_wins(self):
+        """Tests to make sure that RED can win."""
+        game = HasamiShogiGame()
+        game._game_board = [["_", "_", "_", "R", "R", "R", "R", "R", "R"],
+        ["R", "B", "B", "_", "_", "_", "_", "_", "_"],
+        ["_", "_", "_", "_", "_", "_", "_", "_", "_"],
+        ["_", "_", "_", "_", "_", "_", "_", "_", "_"],
+        ["_", "_", "_", "_", "B", "_", "_", "_", "_"],
+        ["_", "_", "_", "_", "_", "_", "_", "_", "_"],
+        ["_", "_", "_", "_", "_", "_", "_", "_", "_"],
+        ["_", "_", "_", "_", "_", "_", "_", "_", "_"],
+        ["R", "B", "B", "B", "B", "B", "B", "B", "_"]]
+        game.make_move('B2','A2')
+        game.make_move('a9','i9')
+        game.make_move('B3','A3')
+        game.make_move('B1','A1')
         game.display_game()
         state = game.get_game_state()
-        self.assertEqual("UNFINISHED", state)
-        red_caps = game.get_num_captured_pieces('red')
-        self.assertEqual(1, red_caps)
+        self.assertEqual("RED_WON", state)
+        # Games over, should not be able to make a move now
+        not_allowed = game.make_move("a1", "a2")
+        self.assertFalse(not_allowed)
+        not_allowed = game.make_move("e5", "e6")
+        self.assertFalse(not_allowed)
 
-    def test_17_corner_check_top_left(self):
-        """Tests a capture scenario for the top left corner."""
+    def test_20_double_scenarios(self):
+        """Captures left and downward"""
         game = HasamiShogiGame()
-        game._game_board = [["R", "B", "R", "R", "R", "R", "R", "R", "B"],
+        game._game_board = \
+            [["_", "B", "R", "R", "_", "_", "_", "_", "B"],
+            ["_", "_", "_", "_", "R", "_", "_", "_", "_"],
+            ["_", "_", "_", "_", "R", "_", "_", "_", "_"],
+            ["_", "_", "_", "_", "R", "_", "_", "_", "_"],
+            ["_", "_", "_", "_", "R", "_", "_", "_", "_"],
+            ["_", "_", "_", "_", "R", "_", "_", "_", "_"],
+            ["_", "_", "_", "_", "B", "_", "_", "_", "_"],
+            ["_", "_", "_", "_", "_", "_", "_", "_", "_"],
+            ["_", "_", "_", "_", "_", "_", "_", "_", "_"]]
+        game.make_move('a9','a5')
+        game.display_game()
+    
+    def test_21_triple_scenarios(self):
+        """Captures left, right, and downwards."""
+        game = HasamiShogiGame()
+        game._game_board = \
+            [["_", "_", "_", "_", "B", "_", "_", "_", "_"],
+            ["_", "_", "_", "_", "_", "_", "_", "_", "_"],
+            ["B", "R", "R", "R", "_", "R", "R", "R", "B"],
+            ["_", "_", "_", "_", "R", "_", "_", "_", "_"],
+            ["_", "_", "_", "_", "B", "_", "_", "_", "_"],
             ["_", "_", "_", "_", "_", "_", "_", "_", "_"],
             ["_", "_", "_", "_", "_", "_", "_", "_", "_"],
             ["_", "_", "_", "_", "_", "_", "_", "_", "_"],
-            ["_", "_", "_", "_", "_", "_", "_", "_", "_"],
-            ["_", "_", "_", "_", "_", "_", "_", "_", "_"],
-            ["_", "_", "_", "_", "_", "_", "_", "_", "_"],
-            ["_", "_", "_", "_", "_", "_", "_", "_", "_"],
-            ["B", "_", "B", "B", "B", "B", "B", "B", "R"]]
-        game.make_move('i1', 'b1')
+            ["_", "_", "_", "_", "_", "_", "_", "_", "_"]]
+        game.make_move('a5','c5')
         game.display_game()
         red_caps = game.get_num_captured_pieces('red')
-        self.assertEqual(1, red_caps)
-        game.make_move('i9','b9')
+        self.assertEqual(7, red_caps)
+
+    def test_22_triple_scenarios_top(self):
+        """Captures left, right, and downwards."""
+        game = HasamiShogiGame()
+        game._game_board = \
+            [["_", "_", "_", "_", "B", "_", "_", "_", "_"],
+            ["_", "_", "_", "_", "R", "_", "_", "_", "_"],
+            ["B", "R", "R", "R", "_", "R", "R", "R", "B"],
+            ["_", "_", "_", "_", "_", "_", "_", "_", "_"],
+            ["_", "_", "_", "_", "_", "_", "_", "_", "_"],
+            ["_", "_", "_", "_", "_", "_", "_", "_", "_"],
+            ["_", "_", "_", "_", "_", "_", "_", "_", "_"],
+            ["_", "_", "_", "_", "_", "_", "_", "_", "_"],
+            ["_", "_", "_", "_", "B", "_", "_", "_", "_"]]
+        game.make_move('i5','c5')
+        game.display_game()
         red_caps = game.get_num_captured_pieces('red')
-        self.assertEqual(1, red_caps)
-        black_caps = game.get_num_captured_pieces('black')
-        self.assertEqual(1, black_caps)# state = game.get_game_state()
-        # self.assertEqual("UNFINISHED", state)
-        # red_caps = game.get_num_captured_pieces('red')
-        # self.assertEqual(1, red_caps)
-
-    # def test_xx_(self):
-    #     """Text"""
-    #     pass
-
-    # def test_xx_(self):
-    #     """Text"""
-    #     pass
-
+        self.assertEqual(7, red_caps)
 if __name__ == '__main__':
     unittest.main()
