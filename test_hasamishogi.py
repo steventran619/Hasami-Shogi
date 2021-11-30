@@ -389,9 +389,36 @@ class HasamiTests(unittest.TestCase):
         game.display_game()
 
     def test_25_get_sq_occupant(self):
+        """Debugging get_square_occupant."""
         game = HasamiShogiGame()
         occupant = game.get_square_occupant('a4')
         self.assertEqual("RED", occupant)
+    
+    def test_26_blocked_moves(self):
+        """Tests to see if the piece can moved to obstructed zones."""
+        game = HasamiShogiGame()
+        game._game_board = \
+            [["_", "_", "_", "_", "R", "_", "_", "_", "_"],
+            ["_", "_", "_", "_", "_", "_", "_", "_", "_"],
+            ["_", "_", "_", "_", "B", "_", "_", "_", "_"],
+            ["_", "_", "_", "_", "_", "_", "_", "_", "_"],
+            ["_", "_", "R", "_", "B", "_", "R", "_", "_"],
+            ["_", "_", "_", "_", "_", "_", "_", "_", "_"],
+            ["_", "_", "_", "_", "B", "_", "_", "_", "_"],
+            ["_", "_", "_", "_", "_", "_", "_", "_", "_"],
+            ["_", "_", "_", "_", "B", "_", "_", "_", "_"]]
+        # moving vertical/horizontally obstructed
+        game.make_move('e5','a5')
+        game.make_move('e5','e8')
+        game.make_move('e5','e1')
+        game.make_move('e5','i5')
+        # moving to diagonals
+        game.make_move('e5','a1')
+        game.make_move('e5','a9')
+        game.make_move('e5','i1')
+        game.make_move('e5','i9')
+        game.display_game()
+
 
 
         

@@ -7,28 +7,19 @@
 # of the 9 opponents pieces. To capture a piece, the opposing player's piece
 # must be "sandwiched" between two of the active player's pieces.
 
-class GamePiece():
-    """Initial game pieces (either RED or BLACK). Still TBD if want to use."""
-    def __init__(self):
-        pass
-
 class HasamiShogiGame():
     """Initializes a game of Hasami Shogi (Japanese Rook-Like Capture Game).
     The board will be stored in this init of _game_board where it is first
     initalized with 'RED' and 'BLACK' pieces at the applicable starting
     postiions."""
+
     def __init__(self):
         """Initializes the _game_board.
         Moves will be tracked using the _move_tracker which will increment by
         one based on successful moves. This may also be used later at the end
         to determine how many moves it took for the game to complete.
-        _game_state: will be used with a while loop to determine the current
-        state of the game. After each move, determines if the game is still
-        in progress. This will be achieved by calling get_num_captured_pieces
-        function to determine if either RED or BLACK has captured at least 8
-        pieces. If so, the _game_state flag will result with the winner.
-        Otherwise it will remain in the 'IN PROGRESS' state. """
-        
+        """
+    
         self._top_label = "    1 2 3 4 5 6 7 8 9"
         self._side_label = ['a','b','c','d','e','f','g','h','i']
         self._game_board = [["R", "R", "R", "R", "R", "R", "R", "R", "R"],
@@ -41,14 +32,8 @@ class HasamiShogiGame():
             ["_", "_", "_", "_", "_", "_", "_", "_", "_"],
             ["B", "B", "B", "B", "B", "B", "B", "B", "B"]]
         self._move_tracker = 1      # Tracks the number of moves performed in the game
-        # self._game_state = "UNFINISHED"     # Will be used for while loop to
         self._red_caps = 0
         self._black_caps = 0
-        # determine if the game is still on-going.
-        # while self._red_caps < 8 and self._black_caps < 8:
-        #     self._game_state = "UNFINISHED"
-
-
 
     def display_game(self):
         """Displays the current state of the game. """
@@ -128,7 +113,6 @@ class HasamiShogiGame():
             print("Invalid selection, please enter either 'RED' or 'BLACK'")
             return False
 
-    # This might work as a wrapper. Converts to human friendly tiles (a-i)(1-9)
     def move_to_index(self, move):
         """Converts the move to an index for the _game_board's list parameters
         allowing for spaces of a-i and 1-9.
@@ -199,6 +183,7 @@ class HasamiShogiGame():
             return "NONE"
         else:
             print("Something is wrong in get_square_occupant")
+            return False
 
     def move_type(self, start_loc, end_loc):
         """After checking the start and end locations are valid, this function
@@ -276,10 +261,9 @@ class HasamiShogiGame():
             # print(f"checking occupant for index {index}")
             return self.horizontal_move(start_loc, end_loc, pos + direction)
         else:
-            print("Invalid Move on Horizontal")
+            # print("Invalid Move on Horizontal")
             return False
     
-    #  Trying Recursive Move
     def vertical_move(self, start_loc, end_loc, pos = None):
         """Checks to see if there are any pieces between the start_loc to the
         end_loc. If the start location's row is less than the end location's
@@ -444,7 +428,6 @@ class HasamiShogiGame():
                     print("Hor_Cap: Reached out of bounds")
                     return False
 
-
     def corner_capture(self, start_loc):
         """If the current move is nearby an opponent's corner piece, check to see if
         another active player's piece resides on the nearby corner.
@@ -467,7 +450,6 @@ class HasamiShogiGame():
             top_left = ['b1', 'a2', 'a1']
             bot_right = ['i8', 'h9', 'i9']
             bot_left = ['h1', 'i2', 'i1']
-
             active_player = self.get_active_player()
             
             # The move determines which active corner will be checked.
@@ -587,6 +569,7 @@ class HasamiShogiGame():
                     return self.vertical_capture_up(start_loc, maybe_caps, pos - 10)
                 else:
                     return False
+
     def capture_down(self, start_loc):
         """Helper function for vertical_capture_down.
 
@@ -662,7 +645,7 @@ class HasamiShogiGame():
         Returns:
             True: updated location with the piece. Also updates start_loc to an
                 empty location again. Updates the active player, and move_tracker
-            False: if the current move is blocked by any pieces
+            False: if the current move is blocked by any pieces/illegal moves.
         """
         game_state = self.get_game_state()
         if game_state == "BLACK_WON" or game_state == "RED_WON":
@@ -684,7 +667,7 @@ class HasamiShogiGame():
                     # print("\nmake_move: Confirmed for Horizontal path")
                     move = self.horizontal_move(start, end)
                 else:
-                    print("Invalid move. Please try again.")
+                    print("Invalid move request. Please try again.")
                     return False
             else:
                 print(f"Invalid Turn\nCurrent Player: {self.get_active_player()}")
@@ -705,7 +688,7 @@ def main():
     game.make_move('a5','d5')
     game.make_move('i2','g2')
     print(game.get_active_player())
-    game.make_move('g2','h2')
+    game.make_move('g2','h2')   # Invalid Turn
     game.make_move('a1','h1')
     game.make_move('g2','g1')
     game.make_move('a2','i2')
@@ -717,8 +700,6 @@ def main():
     game.make_move('c9','i9')
     game.make_move('a1','a2')
     game.display_game()
-
-    # game.make_move('i9', 'i8')
 
 if __name__ == "__main__":
     main()
