@@ -1,6 +1,6 @@
 # Steven Tran
-# 2021-12-02
-# CS-162 Final Project: Hasami Shogi (Variant 1)
+# Last Modified: 2022-02-14
+# Hasami Shogi
 # Description: In the Japanese Board Game of Hasami Shogi, players take turns
 # moving their piece (either red or black). Pieces move like rooks in the
 # game of chess, horizontally or vertically. The goal is to at capture least 8
