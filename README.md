@@ -4,15 +4,15 @@ This is a portfolio project of the Japanese game named HasamiShogiGame, an abstr
 
 ```
   1 2 3 4 5 6 7 8 9
-a . . . . . B . . .
-b . . . . . R . . .
-c . . B R R . . . .
-d B . . . . . . . .
-e R . . . . . . . .
-f R . . . . . . . .
-g R . . . . . . . .
-h . . . . . B . . .
-i R B . . . . . . .
+a _ _ _ _ _ B _ _ _
+b _ _ _ _ _ R _ _ _
+c _ _ B R R _ _ _ _
+d B _ _ _ _ _ _ _ _
+e R _ _ _ _ _ _ _ _
+f R _ _ _ _ _ _ _ _
+g R _ _ _ _ _ _ _ _
+h _ _ _ _ _ B _ _ _
+i R B _ _ _ _ _ _ _
 ```
 
 Locations on the board will be specified using "algebraic notation", with rows labeled a-i and rows labeled 1-9, as shown in the diagram of the starting position shown on the Wikipedia page.
