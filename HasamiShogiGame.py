@@ -35,6 +35,9 @@ class HasamiShogiGame():
         self._red_caps = 0
         self._black_caps = 0
 
+    def get_game_board(self):
+        return self._game_board
+
     def display_game(self):
         """Displays the current state of the game. """
         print('\n')

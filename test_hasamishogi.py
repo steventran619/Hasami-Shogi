@@ -419,6 +419,13 @@ class HasamiTests(unittest.TestCase):
         game.make_move('e5','i9')
         game.display_game()
 
+    def test_27_get_game_board(self):
+        """Tests to see if the piece can moved to obstructed zones."""
+        print("\nTest 27")
+        game = HasamiShogiGame()
+        game.get_game_board()
+        print(game.get_game_board()[8][2])
+
 
 
         
