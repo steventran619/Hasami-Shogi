@@ -659,7 +659,7 @@ class HasamiShogiGame():
         move = False
         if start and end:
             if self.get_square_occupant(start_loc) == self.get_active_player():
-                print(f"Your turn: {self.get_active_player()}")
+                # print(f"Your turn: {self.get_active_player()}")
                 # Check if move is possible
                 # print(f"Moving from {start} to {end}")
                 moving = self.move_type(start, end)
@@ -682,6 +682,7 @@ class HasamiShogiGame():
             self.capture_left(end)
             self.corner_capture(end)
             self.next_turn()
+            print(f"Your turn: {self.get_active_player()}")
             return True
 
 def main():

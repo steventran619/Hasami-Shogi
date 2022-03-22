@@ -2,6 +2,7 @@
 # Import and initialize the pygame library
 
 import pygame
+from pygame.sprite import Sprite
 import HasamiShogiGame
 import time
 import math
@@ -23,6 +24,29 @@ pygame.init()
 screen = pygame.display.set_mode([WINDOW_WIDTH, WINDOW_HEIGHT])
 pygame.display.set_caption("Hasami Shogi v1.0 by Steven Tran")
 
+class Red_Piece(pygame.sprite.Sprite):
+    """The Red Piece"""
+    def __init__(self, x, y):
+        """Initialize the ship and set its starting position."""
+        pygame.sprite.Sprite.__init__(self)
+
+        self.image = pygame.image.load('red_shogi.png')
+        self.rect = self.image.get_rect()       # dimensions of red shogi piece
+        # Store a decimal value for the ship's horizontal position.
+        self.x = float(self.rect.x)
+        self.y = float(self.rect.y)
+
+        
+# class Black_Piece:
+#     """The Red Piece"""
+#     def __init__(self, game):
+#         """Initialize the ship and set its starting position."""
+#         self.image = pygame.image.load('black_shogi.png')
+#         self.rect = self.image.get_rect()       # dimensions of black shogi piece
+#         # Store a decimal value for the ship's horizontal position.
+#         self.x = float(self.rect.x)
+#         self.y = float(self.rect.y)
+
 def main(): 
     pygame.init()
     game = HasamiShogiGame.HasamiShogiGame()
@@ -38,16 +62,17 @@ def main():
             if event.type == pygame.QUIT:
                 pygame.quit()
                 return
+
             if event.type == pygame.MOUSEBUTTONDOWN:
                 selection = (mouse_pos_to_square(event.pos))
                 clicks.append(selection)
-                print(clicks)
-                pygame.draw.circle(screen, RED, (SQUARE_SIZE * int(selection[1]) + .5 * SQUARE_SIZE, SQUARE_SIZE * int(selection[0]) + .5 * SQUARE_SIZE), .4 * SQUARE_SIZE, 100)
+                # print(clicks)
+                pygame.draw.circle(screen, HIGHLIGHT, (SQUARE_SIZE * int(selection[1]) + .5 * SQUARE_SIZE, SQUARE_SIZE * int(selection[0]) + .5 * SQUARE_SIZE), .4 * SQUARE_SIZE, 100)
 
                 if len(clicks) == 2:
                     source = game.index_to_move(clicks[0])
                     destination = game.index_to_move(clicks[1])
-                    # print(source, destination)
+                    print(f"Moving {source} → {destination}")
                     game.make_move(source, destination)
                     clicks = []
 
@@ -59,16 +84,13 @@ def main():
         # Fill the background with BOARD_COLOR
         screen.fill(BOARD_COLOR)
 
-        # Draw a solid blue circle in the center
-        # pygame.draw.circle(screen, (0, 0, 255), (250, 250), 75)
+        # Draws the grid lines of the board
         for col in range(0, COLS):
             x = col * WINDOW_WIDTH // COLS
             pygame.draw.line(screen, (0,0,0), (x,0), (x, WINDOW_HEIGHT), width=1)
         for row in range(0, ROWS):
             y = row * WINDOW_HEIGHT // ROWS
-            pygame.draw.line(screen, (0,0,0), (0,y), (WINDOW_WIDTH, y), width=1)
-        #  print(game.get_game_board())
-        
+            pygame.draw.line(screen, (0,0,0), (0,y), (WINDOW_WIDTH, y), width=1)     
         
         # Displays the pieces on the game board
         for row in range(ROWS):
@@ -76,24 +98,23 @@ def main():
                 # print("row and column is", row, col)
                 space = str(row) + str(col)
                 if game.get_square_occupant(game.index_to_move(space)) == "RED":
-                    pygame.draw.circle(screen, RED, (SQUARE_SIZE * col + .5 * SQUARE_SIZE, SQUARE_SIZE * row + .5 * SQUARE_SIZE), .4 * SQUARE_SIZE, 20)
+                    pygame.draw.circle(screen, RED, (SQUARE_SIZE * col + .5 * SQUARE_SIZE, SQUARE_SIZE * row + .5 * SQUARE_SIZE), .4 * SQUARE_SIZE, 40)
                     #pygame.draw.circle(screen, RED, (SQUARE_SIZE * row, SQUARE_SIZE * col), 75)
                 elif game.get_square_occupant(game.index_to_move(space)) == "_":
                     # pygame.draw.rect(screen, BOARD_COLOR, (SQUARE_SIZE * col + .5 * SQUARE_SIZE, SQUARE_SIZE * row + .5 * SQUARE_SIZE), .4 * SQUARE_SIZE, 100)
                     pass
                 elif game.get_square_occupant(game.index_to_move(space)) == "BLACK":
-                    pygame.draw.circle(screen, BLACK, (SQUARE_SIZE * col + .5 * SQUARE_SIZE, SQUARE_SIZE * row + .5 * SQUARE_SIZE), .4 * SQUARE_SIZE, 20)
+                    pygame.draw.circle(screen, BLACK, (SQUARE_SIZE * col + .5 * SQUARE_SIZE, SQUARE_SIZE * row + .5 * SQUARE_SIZE), .4 * SQUARE_SIZE, 40)
 
     # Flip the display
         pygame.display.update()
         # update screen:
         # pygame.display.flip()
-        # pause a while (30ms) least our game use 100% cpu for nothing:
+        # pause a while (60ms) least our game use 100% cpu for nothing:
         pygame.time.wait(60)
-
-    # Done! Time to quit.
 
     time.sleep(10)
     pygame.quit()
 
-main()
+if __name__ == "__main__":
+    main()
