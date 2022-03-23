@@ -11,7 +11,7 @@ import math
 WINDOW_WIDTH = 900
 WINDOW_HEIGHT = 900
 ROWS, COLS = 9, 9
-SQUARE_SIZE = WINDOW_WIDTH // ROWS
+SQUARE_SIZE = WINDOW_WIDTH / ROWS
 RED = (180, 0, 0)
 BLACK = (0, 0, 0)
 BOARD_COLOR = (232, 212, 153)
@@ -36,7 +36,6 @@ class Red_Piece(pygame.sprite.Sprite):
         self.x = float(self.rect.x)
         self.y = float(self.rect.y)
 
-        
 # class Black_Piece:
 #     """The Red Piece"""
 #     def __init__(self, game):
@@ -48,7 +47,7 @@ class Red_Piece(pygame.sprite.Sprite):
 #         self.y = float(self.rect.y)
 
 def main(): 
-    pygame.init()
+    # pygame.init()
     game = HasamiShogiGame.HasamiShogiGame()
     clock = pygame.time.Clock()
     # Run until there is a winner
@@ -105,15 +104,23 @@ def main():
                     pass
                 elif game.get_square_occupant(game.index_to_move(space)) == "BLACK":
                     pygame.draw.circle(screen, BLACK, (SQUARE_SIZE * col + .5 * SQUARE_SIZE, SQUARE_SIZE * row + .5 * SQUARE_SIZE), .4 * SQUARE_SIZE, 40)
+        
+        # ACTION: Add update for winner
+        # if game.get_game_state() == "RED_WON":
+        #     # Display RED WON
+        #     pass
+        # else:
+        #     # Display BLACK WON
+
+        #     pass
 
     # Flip the display
         pygame.display.update()
-        # update screen:
         # pygame.display.flip()
         # pause a while (60ms) least our game use 100% cpu for nothing:
         pygame.time.wait(60)
-
-    time.sleep(10)
+    print("Thank you for playing! The game will be closing shortly.")
+    time.sleep(5)
     pygame.quit()
 
 if __name__ == "__main__":

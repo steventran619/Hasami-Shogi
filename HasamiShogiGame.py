@@ -84,8 +84,10 @@ class HasamiShogiGame():
         if self.get_num_captured_pieces("RED") < 8 and self.get_num_captured_pieces("BLACK") < 8:
             return "UNFINISHED"
         elif self.get_num_captured_pieces("RED") >= 8:
+            print("Black Wins!")
             return "BLACK_WON"
         else:
+            print("Red Wins!")
             return "RED_WON"
 
     def get_active_player(self):
