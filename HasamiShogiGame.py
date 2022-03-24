@@ -1,5 +1,5 @@
 # Steven Tran
-# Last Modified: 2022-02-14
+# Last Modified: 2022-03-23
 # Hasami Shogi
 # Description: In the Japanese Board Game of Hasami Shogi, players take turns
 # moving their piece (either red or black). Pieces move like rooks in the
@@ -84,10 +84,10 @@ class HasamiShogiGame():
         if self.get_num_captured_pieces("RED") < 8 and self.get_num_captured_pieces("BLACK") < 8:
             return "UNFINISHED"
         elif self.get_num_captured_pieces("RED") >= 8:
-            print("Black Wins!")
+            # print("Black Wins!")
             return "BLACK_WON"
         else:
-            print("Red Wins!")
+            # print("Red Wins!")
             return "RED_WON"
 
     def get_active_player(self):
