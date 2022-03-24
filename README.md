@@ -24,5 +24,5 @@ Horizontal Capture of 4 Red Pieces
 ![](https://github.com/ChocolateTaco/Hasami-Shogi/blob/main/sample/horizontal_cap.gif | width=200)
 
 Corner Capture of 1 Black Piece
-![]("https://github.com/ChocolateTaco/Hasami-Shogi/blob/main/sample/corner_cap.gif" width="100" height="100")
+![]("https://github.com/ChocolateTaco/Hasami-Shogi/blob/main/sample/corner_cap.gif" | width="100" height="100")
 
