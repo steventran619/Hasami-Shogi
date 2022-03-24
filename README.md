@@ -1,6 +1,8 @@
-# Hasami Shogi
+<p align="center">
+  <img src="https://github.com/ChocolateTaco/Hasami-Shogi/blob/main/sample/Title.png">
+</p>
 
-This is a portfolio project of the Japanese game named HasamiShogiGame, an abstract board game similar to checkers. The game follows  "**Variant 1**" on the [Wikipedia page](https://en.wikipedia.org/wiki/Hasami_shogi), with the starting position as follows. 
+This is a portfolio project of the Japanese game named HasamiShogiGame, an abstract board game similar to checkers. The game follows  "Variant 1" on the [Wikipedia page](https://en.wikipedia.org/wiki/Hasami_shogi), with the starting position as follows. 
 
 ```
   1 2 3 4 5 6 7 8 9
