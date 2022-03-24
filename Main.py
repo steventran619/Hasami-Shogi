@@ -113,10 +113,10 @@ def main():
         # Draws the grid lines of the board
         for col in range(0, COLS):
             x = col * WINDOW_WIDTH // COLS
-            pygame.draw.line(screen, (0,0,0), (x,0), (x, WINDOW_HEIGHT), width=1)
+            pygame.draw.line(screen, (0,0,0), (x,0), (x, WINDOW_HEIGHT), width=2)
         for row in range(0, ROWS):
             y = row * WINDOW_HEIGHT // ROWS
-            pygame.draw.line(screen, (0,0,0), (0,y), (WINDOW_WIDTH, y), width=1)     
+            pygame.draw.line(screen, (0,0,0), (0,y), (WINDOW_WIDTH, y), width=2)     
         
         # Displays the pieces on the game board
         for row in range(ROWS):
