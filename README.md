@@ -18,11 +18,11 @@ i R B _ _ _ _ _ _ _
 Locations on the board will be specified using "algebraic notation", with rows labeled a-i and rows labeled 1-9, as shown in the diagram of the starting position shown on the Wikipedia page.
 
 Vertical Capture of 2 Red Pieces
-![](https://github.com/ChocolateTaco/Hasami-Shogi/blob/main/sample/vertical_cap.gif | width=200)
+![](https://github.com/ChocolateTaco/Hasami-Shogi/blob/main/sample/vertical_cap.gif = 250x250)
 
 Horizontal Capture of 4 Red Pieces
 ![](https://github.com/ChocolateTaco/Hasami-Shogi/blob/main/sample/horizontal_cap.gif | width=200)
 
 Corner Capture of 1 Black Piece
-![](https://github.com/ChocolateTaco/Hasami-Shogi/blob/main/sample/corner_cap.gif | width=200)
+![]("https://github.com/ChocolateTaco/Hasami-Shogi/blob/main/sample/corner_cap.gif" width="100" height="100")
 
