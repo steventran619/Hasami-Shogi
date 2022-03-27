@@ -321,7 +321,7 @@ class HasamiShogiGame():
             # print(f"checking occupant for index {index}")
             return self.vertical_move(start_loc, end_loc, pos + direction)
         else:
-            print("Invalid Move Vertically")
+            # print("Invalid Move Vertically")
             return False
 
     def capture_right(self, start_loc):
@@ -686,6 +686,7 @@ class HasamiShogiGame():
             self.next_turn()
             print(f"Your turn: {self.get_active_player()}")
             return True
+
 
 def main():
     game = HasamiShogiGame()
