@@ -10,7 +10,7 @@ import HasamiShogiGame
 import math
 
 # CONSTANTS
-WINDOW_WIDTH = 500
+WINDOW_WIDTH = 720
 WINDOW_HEIGHT = WINDOW_WIDTH
 ROWS, COLS = 9, 9
 SQUARE_SIZE = WINDOW_WIDTH / ROWS
@@ -102,9 +102,10 @@ def main():
                     clicks.append(selection)
                     source = game.index_to_move(clicks[0])
                     destination = game.index_to_move(clicks[1])
+                    print(f"Move attempt: {source} → {destination}")
                     move = game.make_move(source, destination)
-                    if move == True:
-                        print(f"Moving {source} → {destination}")
+                    # if move == True:
+                        # print(f"Moving {source} → {destination}")
                     clicks = []
 
         # Fill the background with BOARD_COLOR
