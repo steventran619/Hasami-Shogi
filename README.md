@@ -1,6 +1,8 @@
-# Hasami Shogi
+<p align="center">
+  <img src="https://github.com/ChocolateTaco/Hasami-Shogi/blob/main/sample/Title.png">
+</p>
 
-This is a portfolio project of the Japanese game named HasamiShogiGame, an abstract board game similar to checkers. The game follows  "**Variant 1**" on the [Wikipedia page](https://en.wikipedia.org/wiki/Hasami_shogi), with the starting position as follows. 
+This is a portfolio project of the Japanese game named HasamiShogiGame, an abstract board game similar to checkers. The game follows  "Variant 1" on the [Wikipedia page](https://en.wikipedia.org/wiki/Hasami_shogi), with the starting position as follows. The game is intended to be played with two players.
 
 ```
   1 2 3 4 5 6 7 8 9
@@ -26,14 +28,14 @@ i B B B B B B B B B
 2. Pieces can only move vertically or horizontally (similar to a Rook in Chess).
 4. Pieces are captured (either vertically or horziontally) when they are "sandwiched" by opposing pieces, only on their turn. 
 
-<img src="https://github.com/ChocolateTaco/Hasami-Shogi/blob/main/sample/vertical_cap.gif" width="250" height="250"/>
+<img src="https://github.com/ChocolateTaco/Hasami-Shogi/blob/main/sample/vertical_cap.gif" width="275" height="275"/>
 <em>Vertical Capture of 2 Red Pieces</em>
 
-<img src="https://github.com/ChocolateTaco/Hasami-Shogi/blob/main/sample/horizontal_cap.gif" width="250" height="250"/>
+<img src="https://github.com/ChocolateTaco/Hasami-Shogi/blob/main/sample/horizontal_cap.gif" width="275" height="275"/>
 <em>Horizontal Capture of 4 Red Pieces</em>
 
 4. A corner piece can be captured when trapped by the two adjacent squares.
-<img src="https://github.com/ChocolateTaco/Hasami-Shogi/blob/main/sample/corner_cap.gif" width="250" height="250"/>
+<img src="https://github.com/ChocolateTaco/Hasami-Shogi/blob/main/sample/corner_cap.gif" width="275" height="275"/>
 <em>Corner Capture of 1 Black Piece</em>
 
 
