@@ -18,9 +18,12 @@ i B B B B B B B B B
 ```
 <h2>Requirements</h2>
 
-* Python 2.6+
-* Pygame Module 
-* Simply run "Main.py"
+* Python 3.6+
+* Pygame Module Installed
+```
+$ pip install -r requirements.txt
+```
+* Run "Main.py"
 
 <h2>How to Play</h2>
 
