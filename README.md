@@ -4,22 +4,9 @@
 
 This is a portfolio project of the Japanese game named HasamiShogiGame, an abstract board game similar to checkers. The game follows  "Variant 1" on the [Wikipedia page](https://en.wikipedia.org/wiki/Hasami_shogi), with the starting position as follows. The game is intended to be played with two players.
 
-```
-  1 2 3 4 5 6 7 8 9
-a R R R R R R R R R
-b _ _ _ _ _ _ _ _ _
-c _ _ _ _ _ _ _ _ _
-d _ _ _ _ _ _ _ _ _
-e _ _ _ _ _ _ _ _ _
-f _ _ _ _ _ _ _ _ _
-g _ _ _ _ _ _ _ _ _
-h _ _ _ _ _ _ _ _ _
-i B B B B B B B B B
-```
 <h2>Requirements</h2>
 
 * Python 3.6+
-* Pygame Module Installed
 ```
 $ pip install -r requirements.txt
 ```
