@@ -1,10 +1,10 @@
 """
-Graphical user interface to play the Hasami Shogi Game built in CS 162 using the PyGame module. 
-Requires pygame module to be installed on the running system/platform.
-Written by Steven Tran
+Graphical user interface to play the Hasami Shogi Game built with the PyGame 
+module. Written by Steven Tran
 Date: 3/24/2022
 """
 
+import os
 import pygame
 import HasamiShogiGame
 import math
@@ -28,15 +28,18 @@ pygame.init()
 screen = pygame.display.set_mode([WINDOW_WIDTH, WINDOW_HEIGHT])
 pygame.display.set_caption("Hasami Shogi v1.0 by Steven Tran")
 
+sourceFileDir = os.path.dirname(os.path.abspath(__file__))
+red_piece_og = pygame.image.load(os.path.join(sourceFileDir, "icons", "red_shogi.png"))
+
 # Game Piece Images, scaled to fit the square size
-red_piece_og = pygame.image.load("red_shogi.png")
+# red_piece_og = pygame.image.load("/icons/red_shogi.png")
 red_piece = pygame.transform.scale(red_piece_og, (SQUARE_SIZE, SQUARE_SIZE))
 
-black_piece_og = pygame.image.load("black_shogi.png")
+black_piece_og = pygame.image.load(os.path.join(sourceFileDir, "icons", "black_shogi.png"))
+# black_piece_og = pygame.image.load("\icons\black_shogi.png")
 black_piece = pygame.transform.scale(black_piece_og, (SQUARE_SIZE, SQUARE_SIZE))
 
-def main(): 
-    def soundEffect(soundFile):
+def soundEffect(soundFile):
         """Plays a sound effect file
 
         Args:
@@ -45,7 +48,7 @@ def main():
         soundFx = pygame.mixer.Sound(soundFile)
         soundFx.play()
 
-    def showText(display_surface, textToDisplay, textColor):
+def showText(display_surface, fontName, textToDisplay, textColor):
         """Displays the text on the surface of the pygame window
 
         Args:
@@ -53,15 +56,16 @@ def main():
             textToDisplay (str): desired text to be displayed
             textColor (tuple): RGB colors (0~255, 0~255, 0~255)
         """
-        custom_font = pygame.font.Font('Kamikaze.ttf', TITLE_FONT_SIZE)
+        custom_font = pygame.font.Font(fontName, TITLE_FONT_SIZE)
         title_text = custom_font.render(textToDisplay, True, textColor)
         title_text_rect = title_text.get_rect()
         title_text_rect.center = (WINDOW_WIDTH // 2, WINDOW_HEIGHT // 2)
         display_surface.blit(title_text, title_text_rect)
         pygame.display.update()
 
-    def mouse_pos_to_square(position):
-        """Converts pygame's mouse click selection to a valid index for HasamiShogiGame.py
+def mouse_pos_to_square(position):
+        """Converts pygame's mouse click selection to a valid index for 
+        HasamiShogiGame.py
 
         Args:
             position (tuple): pygame's mouse position event
@@ -73,10 +77,14 @@ def main():
         mouse_x = math.floor(position[1] / (WINDOW_HEIGHT / COLS))
         return str(mouse_x) + str(mouse_y)
 
+def main(): 
     game = HasamiShogiGame.HasamiShogiGame()
     clock = pygame.time.Clock()
-    soundEffect("japanese_yooo.wav")
-    showText(screen, "HASAMI SHOGI", WHITE)
+    clapperSound = os.path.join(sourceFileDir, "sound", "japanese_clapper.wav")
+    japanese_yooo = os.path.join(sourceFileDir, "sound", "japanese_yooo.wav")
+    soundEffect(japanese_yooo)
+    fontName = os.path.join(sourceFileDir, "font", "Kamikaze.ttf")
+    showText(screen, fontName, "HASAMI SHOGI", WHITE)
     pygame.time.wait(2500)
 
     clicks = []
@@ -137,18 +145,18 @@ def main():
         
         # Displays the match winner
         if game.get_game_state() == "RED_WON":
-            showText(screen, "RED WINS", RED)
-            soundEffect("japanese_clapper.wav")
+            showText(screen,fontName, "RED WINS", RED)
+            soundEffect(clapperSound)
         elif game.get_game_state() == "BLACK_WON":
-            showText(screen, "BLACK WINS", BLACK)
-            soundEffect("japanese_clapper.wav")
+            showText(screen, fontName, "BLACK WINS", BLACK)
+            soundEffect(clapperSound)
 
         # Updates the game screen
         pygame.display.update()
         pygame.time.wait(60)
         
     print("Thank you for playing! The game will be closing shortly.")
-    pygame.time.wait(5500)
+    pygame.time.wait(4000)
     pygame.quit()
 
 if __name__ == "__main__":
