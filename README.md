@@ -21,7 +21,7 @@ Hasami Shogi is a Japanese board game similar to checkers. This version of the g
 
 1. Players alternate turns (Black starts first, then Red)
 2. Pieces can only move vertically or horizontally (similar to a Rook in Chess).
-3. Pieces are captured (either vertically or horziontally) when they are "sandwiched" by opposing pieces, only on their turn. 
+3. Pieces are captured (either vertically or horziontally) when they are "sandwiched" by opposing pieces, only on their turn. *Note: A player's piece will not be lost on their turn if their move sandwiches themselves between the opponents pieces. In other words, a player cannot purposely lose their piece.* 
 
 <img src="https://github.com/ChocolateTaco/Hasami-Shogi/blob/main/sample/vertical_cap.gif" width="275" height="275"/>
 <em>Vertical Capture of 2 Red Pieces</em>
