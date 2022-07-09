@@ -2,16 +2,21 @@
   <img src="https://github.com/ChocolateTaco/Hasami-Shogi/blob/main/sample/Title.png">
 </p>
 
-This is a portfolio project of the Japanese game named HasamiShogiGame, an abstract board game similar to checkers. The game follows  "Variant 1" on the [Wikipedia page](https://en.wikipedia.org/wiki/Hasami_shogi), with the starting position as follows. The game is intended to be played with two players.
+Hasami Shogi is a Japanese board game, similar to checkers with rook chess pieces. This version of the game follows "Variant 1" on the [Wikipedia page](https://en.wikipedia.org/wiki/Hasami_shogi). The game is intended to be played with two players.
 
-<h2>Requirements</h2>
+## Prerequisites
+[Python 3.6 or later](https://www.python.org/)
 
-* Python 3.6+
-```
-$ pip install -r requirements.txt
-```
-* Run "Main.py"
-
+## Installation##
+1. Clone the repo to a local directory
+2. In the local directory, open a terminal and install the requirements:
+  `
+  pip install -r requirements.txt
+  `
+3. In the terminal run the following:
+  ```
+  python3 Main.py
+  ```
 <h2>How to Play</h2>
 
 1. Players alternate turns (Black starts first, then Red)
